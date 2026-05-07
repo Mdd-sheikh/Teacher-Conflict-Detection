@@ -1,6 +1,6 @@
 // TeacherDashboard.jsx
 import React, { useState } from "react";
-import "./teacherDashboard.css";
+import "./TeacherDashboard.css";
 
 const TeacherDashboard = () => {
   const [activeMenu, setActiveMenu] = useState("dashboard");
