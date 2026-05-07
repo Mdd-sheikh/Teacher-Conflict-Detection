@@ -8,7 +8,7 @@ function App() {
   return (
     <>
       <div className="home">
-        home
+        home ji
       </div>
     </>
   )
