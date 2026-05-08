@@ -1,0 +1,34 @@
+.layout {
+  display: flex;
+  background: #f1f5f9;
+}
+
+.main {
+  flex: 1;
+  padding: 30px;
+}
+
+.settings-box {
+  margin-top: 30px;
+  background: white;
+  padding: 30px;
+  border-radius: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.settings-box input,
+.settings-box select {
+  height: 45px;
+  padding-left: 10px;
+}
+
+.settings-box button {
+  width: 180px;
+  height: 45px;
+  background: #2563eb;
+  color: white;
+  border: none;
+  border-radius: 8px;
+}

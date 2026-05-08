@@ -1,0 +1,65 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: sans-serif;
+}
+
+.layout {
+  display: flex;
+  background: #f1f5f9;
+}
+
+.main {
+  flex: 1;
+  padding: 30px;
+}
+
+.main h1 {
+  margin-bottom: 25px;
+}
+
+.cards {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
+}
+
+.card {
+  background: white;
+  padding: 25px;
+  border-radius: 12px;
+}
+
+.card h3 {
+  color: gray;
+  margin-bottom: 10px;
+}
+
+.card h2 {
+  font-size: 35px;
+}
+
+.red {
+  background: #fee2e2;
+}
+
+.table-box {
+  margin-top: 30px;
+  background: white;
+  padding: 20px;
+  border-radius: 12px;
+}
+
+table {
+  width: 100%;
+  margin-top: 20px;
+  border-collapse: collapse;
+}
+
+table th,
+table td {
+  padding: 15px;
+  border-bottom: 1px solid #ddd;
+  text-align: left;
+}

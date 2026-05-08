@@ -1,0 +1,23 @@
+.layout {
+  display: flex;
+  background: #f1f5f9;
+}
+
+.main {
+  flex: 1;
+  padding: 30px;
+}
+
+.top {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 25px;
+}
+
+.top button {
+  padding: 12px 18px;
+  border: none;
+  background: #2563eb;
+  color: white;
+  border-radius: 8px;
+}

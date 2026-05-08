@@ -1,0 +1,217 @@
+/* LoginSignup.css */
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: sans-serif;
+}
+
+body {
+  background: #f4f5fb;
+}
+
+.auth-container {
+  min-height: 100vh;
+  background: #f4f5fb;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 40px 20px;
+}
+
+.logo-box {
+  width: 60px;
+  height: 60px;
+  background: #0f172a;
+  border-radius: 14px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 20px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+}
+
+.title {
+  font-size: 42px;
+  font-weight: 700;
+  color: #0f172a;
+}
+
+.subtitle {
+  margin-top: 8px;
+  color: #64748b;
+  font-size: 15px;
+  margin-bottom: 30px;
+}
+
+.auth-card {
+  width: 100%;
+  max-width: 500px;
+  background: white;
+  border-radius: 16px;
+  overflow: hidden;
+  border: 1px solid #e2e8f0;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+}
+
+.tabs {
+  display: flex;
+}
+
+.tabs button {
+  flex: 1;
+  padding: 18px;
+  border: none;
+  background: #f8fafc;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  color: #64748b;
+  border-bottom: 2px solid transparent;
+}
+
+.active-tab {
+  background: white !important;
+  color: #2563eb !important;
+  border-bottom: 3px solid #2563eb !important;
+}
+
+.form {
+  padding: 35px;
+}
+
+.input-group {
+  margin-bottom: 22px;
+}
+
+.input-group label {
+  display: block;
+  margin-bottom: 8px;
+  font-size: 14px;
+  color: #334155;
+  font-weight: 600;
+}
+
+.input-box {
+  display: flex;
+  align-items: center;
+  border: 1px solid #dbe2ea;
+  border-radius: 10px;
+  padding: 0 14px;
+  height: 55px;
+  background: #fff;
+  
+ 
+}
+.input-box input {
+  color: black;
+}
+
+.input-box svg {
+  color: #64748b;
+}
+
+.input-box input {
+  width: 100%;
+  border: none;
+  outline: none;
+  padding-left: 10px;
+  font-size: 15px;
+  background: transparent;
+}
+
+.submit-btn {
+  width: 100%;
+  height: 52px;
+  border: none;
+  border-radius: 10px;
+  background: #0f5cc8;
+  color: white;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  margin-top: 10px;
+  transition: 0.3s;
+}
+
+.submit-btn:hover {
+  background: #0b4ba6;
+}
+
+.switch-text {
+  text-align: center;
+  margin-top: 22px;
+  color: #64748b;
+  font-size: 14px;
+}
+
+.switch-text span {
+  color: #2563eb;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.bottom-box {
+  background: #f8fafc;
+  border-top: 1px solid #e2e8f0;
+  padding: 18px;
+  text-align: center;
+  color: #64748b;
+  font-size: 14px;
+}
+
+.bottom-box span {
+  color: #2563eb;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.footer-buttons {
+  margin-top: 24px;
+  display: flex;
+  gap: 18px;
+  width: 100%;
+  max-width: 500px;
+}
+
+.footer-card {
+  flex: 1;
+  background: #eef2ff;
+  border-radius: 12px;
+  padding: 18px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  color: #334155;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.copyright {
+  margin-top: 30px;
+  color: #94a3b8;
+  font-size: 13px;
+}
+
+/* Responsive */
+
+@media (max-width: 600px) {
+  .title {
+    font-size: 30px;
+    text-align: center;
+  }
+
+  .subtitle {
+    text-align: center;
+  }
+
+  .form {
+    padding: 22px;
+  }
+
+  .footer-buttons {
+    flex-direction: column;
+  }
+}
