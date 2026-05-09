@@ -80,13 +80,6 @@ const Auth = () => {
                     >
                         Admin Login
                     </button>
-
-                    <button
-                        className="teacher-tab"
-                        onClick={() => setIsLogin(true)}
-                    >
-                        Teacher Login
-                    </button>
                 </div>
 
                 {/* SIGNUP FORM */}
