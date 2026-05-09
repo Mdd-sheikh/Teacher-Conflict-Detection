@@ -17,7 +17,7 @@ app.use(cors());
 app.use(express.json());
 
 // api endpoint
-app.use("/api/user",UserRouter);
+app.use("/api/user", UserRouter);
 app.use("/api/teacher", teacherRouter);
 app.use("/api/class", classRouter);
 app.use("/api/room", roomRouter);
