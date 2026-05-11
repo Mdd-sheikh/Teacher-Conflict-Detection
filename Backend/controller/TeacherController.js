@@ -130,45 +130,84 @@ export const createTeacher = async (req, res) => {
 // get all teachers with pagination and filtering
 export const getAllTeachers = async (req, res) => {
     try {
-        // ── Search & Filter ──────────────────
+
+        // SEARCH & FILTER
         const { search, status } = req.query;
 
         let query = {};
 
-        // Search by name or teacherId
+        // SEARCH
         if (search) {
             query.$or = [
-                { name: { $regex: search, $options: "i" } },
-                { teacherId: { $regex: search, $options: "i" } },
-                { email: { $regex: search, $options: "i" } },
+                {
+                    name: {
+                        $regex: search,
+                        $options: "i",
+                    },
+                },
+                {
+                    teacherId: {
+                        $regex: search,
+                        $options: "i",
+                    },
+                },
+                {
+                    email: {
+                        $regex: search,
+                        $options: "i",
+                    },
+                },
+                {
+                    phone: {
+                        $regex: search,
+                        $options: "i",
+                    },
+                },
             ];
         }
 
-        // Filter by status
+        // STATUS FILTER
         if (status === "active") {
             query.isActive = true;
-        } else if (status === "inactive") {
+        }
+
+        if (status === "inactive") {
             query.isActive = false;
         }
 
+        // FETCH TEACHERS
         const teachers = await Teacher.find(query)
-            .populate("subjects", "name code")
-            .populate("classes", "name grade")
-            .populate("rooms", "roomNumber type")
-            .populate("timeSlots", "day startTime endTime slotNumber")
+
+            // SUBJECTS POPULATE
+            .populate({
+                path: "subjects",
+                select: "name code department",
+            })
+
+            // ROOMS POPULATE
+            .populate({
+                path: "rooms",
+                select: "roomNumber type capacity",
+            })
+
+            // SORT LATEST FIRST
             .sort({ createdAt: -1 });
 
+        // RESPONSE
         res.status(200).json({
             success: true,
+            message: "Teachers fetched successfully",
             count: teachers.length,
             data: teachers,
         });
 
     } catch (error) {
+
+        console.log(error);
+
         res.status(500).json({
             success: false,
-            message: "Server error",
-            error: error.message,
+            message: error.message || "Server error",
         });
     }
 };
