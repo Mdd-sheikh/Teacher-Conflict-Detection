@@ -2,6 +2,7 @@ import React, { useContext, useEffect, useState } from "react";
 import "./TeacherPage.css";
 import axios from "axios";
 import { Context } from "../../context/Context";
+import { toast } from "react-toastify";
 
 const TeachersPage = () => {
     const { API_URL } = useContext(Context)
@@ -69,42 +70,51 @@ const TeachersPage = () => {
         });
     };
 
-    const handleSubmit = (e) => {
-        const handleLoginSubmit = async (e) => {
-            e.preventDefault();
 
-            try {
-                const response = await axios.post(
-                    `${API_URL}/user/login`,
-                    loginData
-                );
+    const handleSubmit = async (e) => {
 
-                alert(response?.data?.message);
+        e.preventDefault();
 
-            } catch (error) {
-                console.log(error);
+        try {
 
-                alert(
-                    error?.response?.data?.message ||
-                    "Failed to login"
-                );
-            }
-        };
+            const token = localStorage.getItem("token");
 
-        setOpenModal(false);
+            const response = await axios.post(
+                `${API_URL}/teacher/`,
+                teacherData,
+                {
+                    headers: {
+                        Authorization: `Bearer ${token}`
+                    }
+                }
+            );
 
-        setTeacherData({
-            name: "",
-            email: "",
-            phone: "",
-            teacherId: "",
-            password: "",
-            subjects: "",
-            classes: "",
-            rooms: "",
-            timeSlots: "",
-            isActive: true,
-        });
+            toast.success(response?.data?.message);
+
+            setOpenModal(false);
+
+            setTeacherData({
+                name: "",
+                email: "",
+                phone: "",
+                teacherId: "",
+                password: "",
+                subjects: "",
+                classes: "",
+                rooms: "",
+                timeSlots: "",
+                isActive: true,
+            });
+
+        } catch (error) {
+
+            console.log(error);
+
+            toast.error(
+                error?.response?.data?.message ||
+                "Failed to create teacher"
+            );
+        }
     };
 
 

@@ -1,10 +1,13 @@
 // RoomPage.jsx
 
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import "./RoomPage.css";
-
+import axios from "axios";
+import { Context } from "../../context/Context";
+import { toast } from "react-toastify";
 const RoomsPage = () => {
 
+    const { API_URL } = useContext(Context)
     // ==============================
     // MODAL STATE
     // ==============================
@@ -59,6 +62,7 @@ const RoomsPage = () => {
         type: "classroom",
         capacity: "",
     });
+    console.log(formData);
 
     // ==============================
     // HANDLE CHANGE
@@ -73,28 +77,21 @@ const RoomsPage = () => {
     // ==============================
     // ADD ROOM
     // ==============================
-    const handleAddRoom = () => {
+    const handleAddRoom = async () => {
+    const token = localStorage.getItem("token");
 
-        if (
-            !formData.roomNumber ||
-            !formData.type ||
-            !formData.capacity
-        ) {
-            alert("Please fill all fields");
-            return;
-        }
+    try {
+        const response = await axios.post(
+            `${API_URL}/room/createroom`,
+            formData,
+            {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            }
+        );
 
-        const newRoom = {
-            id: Date.now(),
-            roomNumber: formData.roomNumber,
-            type:
-                formData.type.charAt(0).toUpperCase() +
-                formData.type.slice(1),
-            capacity: Number(formData.capacity),
-            status: "Available",
-        };
-
-        setRooms([newRoom, ...rooms]);
+        toast.success(response?.data?.message);
 
         // RESET FORM
         setFormData({
@@ -105,7 +102,11 @@ const RoomsPage = () => {
 
         // CLOSE MODAL
         setShowModal(false);
-    };
+
+    } catch (error) {
+        alert(error?.response?.data?.message || "Something went wrong");
+    }
+};
 
     return (
         <div className="room-page">

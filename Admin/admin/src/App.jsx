@@ -6,6 +6,8 @@ import PublicRoute from './Routes/PublicRoute'
 import PrivateRoute from './Routes/PrivateRoute'
 import { Check } from 'lucide-react'
 import EduSchedAdmin from './components/EduSchedAdmin'
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 
 function App() {
@@ -13,16 +15,16 @@ function App() {
 
   return (
     <>
-
+      <ToastContainer />
 
 
       <Routes>
-        <Route element={<PublicRoute/>}>
+        <Route element={<PublicRoute />}>
 
           <Route path='/' element={<Auth />} />
         </Route>
         <Route element={<PrivateRoute />}>
-          <Route path='/dashboard' element={<EduSchedAdmin/>} />
+          <Route path='/dashboard' element={<EduSchedAdmin />} />
         </Route>
 
       </Routes>
