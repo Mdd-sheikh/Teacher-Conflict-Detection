@@ -4,9 +4,11 @@ export const Context = createContext(null)
 
 
 const ContextProvider = ({ children }) => {
-    const name = ""
+
+    const API_URL = "https://teacher-conflict-detection-2.onrender.com/api"
+    
     const value = {
-        name
+        API_URL
     }
 
     return <Context.Provider value={value}>

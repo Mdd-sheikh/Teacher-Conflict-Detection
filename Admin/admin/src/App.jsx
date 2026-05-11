@@ -14,7 +14,7 @@ function App() {
   return (
     <>
 
-<EduSchedAdmin/>
+
 
       <Routes>
         <Route element={<PublicRoute/>}>
@@ -22,7 +22,7 @@ function App() {
           <Route path='/' element={<Auth />} />
         </Route>
         <Route element={<PrivateRoute />}>
-          <Route path='/check' element={<Check />} />
+          <Route path='/dashboard' element={<EduSchedAdmin/>} />
         </Route>
 
       </Routes>

@@ -1,5 +1,7 @@
 // Auth.jsx
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
+import axios from 'axios'
+import { useNavigate } from "react-router-dom";
 import "./Auth.css";
 import {
     User,
@@ -8,16 +10,21 @@ import {
     BookOpen,
     LifeBuoy,
 } from "lucide-react";
+import { Context } from "../context/Context";
 
 const Auth = () => {
+    const navigate = useNavigate()
     const [isLogin, setIsLogin] = useState(false);
+    const { API_URL } = useContext(Context)
 
     const [signupData, setSignupData] = useState({
-        fullName: "",
+        name: "",
         email: "",
         password: "",
     });
 
+    console.log(signupData);
+    
     const [loginData, setLoginData] = useState({
         email: "",
         password: "",
@@ -44,11 +51,31 @@ const Auth = () => {
     };
 
     // Signup Submit
-    const handleSignupSubmit = (e) => {
-        e.preventDefault();
+    const handleSignupSubmit = async (e) => {
+    e.preventDefault();
 
-        console.log("Signup Data:", signupData);
-    };
+    try {
+        const response = await axios.post(
+            `${API_URL}/user/register`,
+            signupData
+        );
+
+        localStorage.setItem("token", response?.data?.token);
+
+        alert(response?.data?.message);
+
+        setTimeout(() => {
+            navigate("/dashboard");
+        }, 1000);
+
+    } catch (error) {
+        console.log(error);
+
+        alert(
+            error?.response?.data?.message || "Failed to signup"
+        );
+    }
+};
 
     // Login Submit
     const handleLoginSubmit = (e) => {
@@ -93,8 +120,8 @@ const Auth = () => {
                                 <input
                                     type="text"
                                     placeholder="Administrator Name"
-                                    name="fullName"
-                                    value={signupData.fullName}
+                                    name="name"
+                                    value={signupData.name}
                                     onChange={handleSignupChange}
                                 />
                             </div>
