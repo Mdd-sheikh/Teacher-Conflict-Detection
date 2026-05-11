@@ -5,6 +5,7 @@ import { Routes, Route } from 'react-router-dom'
 import PublicRoute from './Routes/PublicRoute'
 import PrivateRoute from './Routes/PrivateRoute'
 import { Check } from 'lucide-react'
+import EduSchedAdmin from './components/EduSchedAdmin'
 
 
 function App() {
@@ -13,7 +14,7 @@ function App() {
   return (
     <>
 
-
+<EduSchedAdmin/>
 
       <Routes>
         <Route element={<PublicRoute/>}>

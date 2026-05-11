@@ -1,0 +1,384 @@
+// RoomPage.jsx
+
+import React, { useState } from "react";
+import "./RoomPage.css";
+
+const RoomsPage = () => {
+
+    // ==============================
+    // MODAL STATE
+    // ==============================
+    const [showModal, setShowModal] = useState(false);
+
+    // ==============================
+    // ROOM DATA
+    // ==============================
+    const [rooms, setRooms] = useState([
+        {
+            id: 1,
+            roomNumber: "101-A",
+            type: "Classroom",
+            capacity: 35,
+            status: "Available",
+        },
+        {
+            id: 2,
+            roomNumber: "CS-LAB-1",
+            type: "Lab",
+            capacity: 25,
+            status: "Conflict",
+        },
+        {
+            id: 3,
+            roomNumber: "Grand Hall",
+            type: "Hall",
+            capacity: 250,
+            status: "Available",
+        },
+        {
+            id: 4,
+            roomNumber: "204-B",
+            type: "Classroom",
+            capacity: 40,
+            status: "Maintenance",
+        },
+        {
+            id: 5,
+            roomNumber: "Bio-Lab-2",
+            type: "Lab",
+            capacity: 20,
+            status: "Available",
+        },
+    ]);
+
+    // ==============================
+    // FORM DATA
+    // ==============================
+    const [formData, setFormData] = useState({
+        roomNumber: "",
+        type: "classroom",
+        capacity: "",
+    });
+
+    // ==============================
+    // HANDLE CHANGE
+    // ==============================
+    const handleChange = (e) => {
+        setFormData({
+            ...formData,
+            [e.target.name]: e.target.value,
+        });
+    };
+
+    // ==============================
+    // ADD ROOM
+    // ==============================
+    const handleAddRoom = () => {
+
+        if (
+            !formData.roomNumber ||
+            !formData.type ||
+            !formData.capacity
+        ) {
+            alert("Please fill all fields");
+            return;
+        }
+
+        const newRoom = {
+            id: Date.now(),
+            roomNumber: formData.roomNumber,
+            type:
+                formData.type.charAt(0).toUpperCase() +
+                formData.type.slice(1),
+            capacity: Number(formData.capacity),
+            status: "Available",
+        };
+
+        setRooms([newRoom, ...rooms]);
+
+        // RESET FORM
+        setFormData({
+            roomNumber: "",
+            type: "classroom",
+            capacity: "",
+        });
+
+        // CLOSE MODAL
+        setShowModal(false);
+    };
+
+    return (
+        <div className="room-page">
+
+            {/* =========================
+                STATS
+            ========================== */}
+            <div className="room-stats-grid">
+
+                <div className="room-stats-card">
+                    <p>TOTAL ROOMS</p>
+                    <h1>42</h1>
+                </div>
+
+                <div className="room-stats-card">
+                    <p>CLASSROOMS</p>
+                    <h1>28</h1>
+                </div>
+
+                <div className="room-stats-card">
+                    <p>LABS</p>
+                    <h1>12</h1>
+                </div>
+
+                <div className="room-stats-card">
+                    <p>CAPACITY UTILIZATION</p>
+                    <h1 className="orange">84%</h1>
+                </div>
+
+            </div>
+
+            {/* =========================
+                TABLE CARD
+            ========================== */}
+            <div className="room-card">
+
+                {/* TOPBAR */}
+                <div className="room-topbar">
+
+                    <div className="room-search-box">
+                        <input
+                            type="text"
+                            placeholder="Search rooms by number or type..."
+                        />
+                    </div>
+
+                    <button
+                        type="button"
+                        className="room-add-btn"
+                        onClick={() => setShowModal(true)}
+                    >
+                        + Add Room
+                    </button>
+
+                </div>
+
+                {/* TABLE */}
+                <div className="room-table-wrapper">
+
+                    <table className="room-table">
+
+                        <thead>
+                            <tr>
+                                <th>ROOM NUMBER</th>
+                                <th>TYPE</th>
+                                <th>CAPACITY</th>
+                                <th>STATUS</th>
+                                <th>ACTIONS</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+
+                            {rooms.map((room) => (
+
+                                <tr key={room.id}>
+
+                                    <td className="room-number">
+                                        {room.roomNumber}
+                                    </td>
+
+                                    <td>{room.type}</td>
+
+                                    <td>
+                                        {room.capacity}
+
+                                        {room.type === "Lab"
+                                            ? " Workstations"
+                                            : room.type === "Hall"
+                                                ? " Seats"
+                                                : " Students"}
+                                    </td>
+
+                                    <td>
+
+                                        <span
+                                            className={`room-status 
+                                            ${room.status === "Available"
+                                                    ? "available"
+                                                    : room.status === "Conflict"
+                                                        ? "conflict"
+                                                        : "maintenance"
+                                                }`}
+                                        >
+                                            {room.status}
+                                        </span>
+
+                                    </td>
+
+                                    <td>
+
+                                        <div className="room-actions">
+
+                                            <button className="edit-btn">
+                                                ✏️
+                                            </button>
+
+                                            <button className="delete-btn">
+                                                🗑️
+                                            </button>
+
+                                        </div>
+
+                                    </td>
+
+                                </tr>
+
+                            ))}
+
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+                {/* FOOTER */}
+                <div className="room-footer">
+
+                    <p>Showing 1-5 of 42 rooms</p>
+
+                    <div className="room-pagination">
+
+                        <button>{"<"}</button>
+
+                        <button className="active">
+                            1
+                        </button>
+
+                        <button>2</button>
+
+                        <button>3</button>
+
+                        <button>{">"}</button>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            {/* =========================
+                MODAL
+            ========================== */}
+            {
+                showModal && (
+
+                    <div className="room-modal-overlay">
+
+                        <div className="room-modal">
+
+                            {/* HEADER */}
+                            <div className="room-modal-header">
+
+                                <h2>Add New Room</h2>
+
+                                <button
+                                    className="room-close-btn"
+                                    onClick={() => setShowModal(false)}
+                                >
+                                    ×
+                                </button>
+
+                            </div>
+
+                            {/* BODY */}
+                            <div className="room-modal-body">
+
+                                {/* ROOM NUMBER */}
+                                <div className="room-input-group">
+
+                                    <label>Room Number</label>
+
+                                    <input
+                                        type="text"
+                                        name="roomNumber"
+                                        placeholder="Enter room number"
+                                        value={formData.roomNumber}
+                                        onChange={handleChange}
+                                    />
+
+                                </div>
+
+                                {/* TYPE */}
+                                <div className="room-input-group">
+
+                                    <label>Room Type</label>
+
+                                    <select
+                                        name="type"
+                                        value={formData.type}
+                                        onChange={handleChange}
+                                    >
+                                        <option value="classroom">
+                                            Classroom
+                                        </option>
+
+                                        <option value="lab">
+                                            Lab
+                                        </option>
+
+                                        <option value="hall">
+                                            Hall
+                                        </option>
+
+                                    </select>
+
+                                </div>
+
+                                {/* CAPACITY */}
+                                <div className="room-input-group">
+
+                                    <label>Capacity</label>
+
+                                    <input
+                                        type="number"
+                                        name="capacity"
+                                        placeholder="Enter capacity"
+                                        value={formData.capacity}
+                                        onChange={handleChange}
+                                    />
+
+                                </div>
+
+                            </div>
+
+                            {/* FOOTER */}
+                            <div className="room-modal-footer">
+
+                                <button
+                                    className="room-cancel-btn"
+                                    onClick={() => setShowModal(false)}
+                                >
+                                    Cancel
+                                </button>
+
+                                <button
+                                    className="room-save-btn"
+                                    onClick={handleAddRoom}
+                                >
+                                    Add Room
+                                </button>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                )
+            }
+
+        </div>
+    );
+};
+
+export default RoomsPage;
