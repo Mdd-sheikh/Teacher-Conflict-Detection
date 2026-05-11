@@ -94,7 +94,7 @@ export const createTeacher = async (req, res) => {
             name,
             email,
             phone,
-            teacherId,
+            teacherId:teacherId,
             password: plainPassword,
             subjects: subjects || [],
             rooms: rooms || [],
