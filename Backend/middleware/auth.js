@@ -1,29 +1,46 @@
-// middleware/auth.js
 import jwt from "jsonwebtoken";
-import UserModel from "../Models/useModelr.js";
+import UserModel from "../models/userModel.js";
 
 export const auth = async (req, res, next) => {
+
     try {
-        // 1. Get token
-        const token = req.headers.authorization?.split(" ")[1];
-        if (!token) {
+
+        const authHeader = req.headers.authorization;
+
+        if (!authHeader || !authHeader.startsWith("Bearer ")) {
             return res.status(401).json({
                 success: false,
                 message: "Not authorized, no token",
             });
         }
 
-        // 2. Verify token
-        const decoded = jwt.verify(token, process.env.JWT_SECRET);
+        const token = authHeader.split(" ")[1];
 
-        // 3. Attach user to request
-        req.user = await UserModel.findById(decoded.id).select("-password");
+        const decoded = jwt.verify(
+            token,
+            process.env.JWT_SECRET
+        );
+
+        req.user = await UserModel
+            .findById(decoded.id)
+            .select("-password");
+
+        if (!req.user) {
+            return res.status(401).json({
+                success: false,
+                message: "User not found",
+            });
+        }
+
         next();
 
     } catch (error) {
+
+        console.log(error);
+
         res.status(401).json({
             success: false,
-            message: "Not authorized, invalid token",
+            message: error.message,
         });
     }
 };
