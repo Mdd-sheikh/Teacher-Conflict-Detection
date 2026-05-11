@@ -1,6 +1,6 @@
 // RoomPage.jsx
 
-import React, { useContext, useState } from "react";
+import React, { useContext, useState,useEffect } from "react";
 import "./RoomPage.css";
 import axios from "axios";
 import { Context } from "../../context/Context";
@@ -10,49 +10,16 @@ const RoomsPage = () => {
     const { API_URL } = useContext(Context)
     // ==============================
     // MODAL STATE
+    const [rooms, setRooms] = useState([])
+    console.log(rooms);
+    
     // ==============================
     const [showModal, setShowModal] = useState(false);
 
     // ==============================
     // ROOM DATA
     // ==============================
-    const [rooms, setRooms] = useState([
-        {
-            id: 1,
-            roomNumber: "101-A",
-            type: "Classroom",
-            capacity: 35,
-            status: "Available",
-        },
-        {
-            id: 2,
-            roomNumber: "CS-LAB-1",
-            type: "Lab",
-            capacity: 25,
-            status: "Conflict",
-        },
-        {
-            id: 3,
-            roomNumber: "Grand Hall",
-            type: "Hall",
-            capacity: 250,
-            status: "Available",
-        },
-        {
-            id: 4,
-            roomNumber: "204-B",
-            type: "Classroom",
-            capacity: 40,
-            status: "Maintenance",
-        },
-        {
-            id: 5,
-            roomNumber: "Bio-Lab-2",
-            type: "Lab",
-            capacity: 20,
-            status: "Available",
-        },
-    ]);
+    
 
     // ==============================
     // FORM DATA
@@ -78,35 +45,63 @@ const RoomsPage = () => {
     // ADD ROOM
     // ==============================
     const handleAddRoom = async () => {
-    const token = localStorage.getItem("token");
+        const token = localStorage.getItem("token");
 
-    try {
-        const response = await axios.post(
-            `${API_URL}/room/createroom`,
-            formData,
-            {
-                headers: {
-                    Authorization: `Bearer ${token}`,
-                },
-            }
-        );
+        try {
+            const response = await axios.post(
+                `${API_URL}/room/createroom`,
+                formData,
+                {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                    },
+                }
+            );
 
-        toast.success(response?.data?.message);
+            toast.success(response?.data?.message);
+            GetRoom()
 
-        // RESET FORM
-        setFormData({
-            roomNumber: "",
-            type: "classroom",
-            capacity: "",
-        });
+            // RESET FORM
+            setFormData({
+                roomNumber: "",
+                type: "classroom",
+                capacity: "",
+            });
 
-        // CLOSE MODAL
-        setShowModal(false);
+            // CLOSE MODAL
+            setShowModal(false);
 
-    } catch (error) {
-        alert(error?.response?.data?.message || "Something went wrong");
-    }
-};
+        } catch (error) {
+            alert(error?.response?.data?.message || "Something went wrong");
+        }
+    };
+
+ const GetRoom = async () => {
+        const token = localStorage.getItem("token");
+
+        try {
+            const response = await axios.get(
+                `${API_URL}/room/getrooms`,
+                {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                    },
+                }
+            );
+
+            setRooms(response?.data?.data);
+
+        } catch (error) {
+            toast.error(
+                error?.response?.data?.message || "Failed to fetch subjects"
+            );
+        }
+    };
+
+    useEffect(() => {
+        GetRoom();
+    }, []);
+
 
     return (
         <div className="room-page">

@@ -1,6 +1,6 @@
 // SubjectPage.jsx
 
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import "./SubjectPage.css";
 import axios from "axios";
 import { Context } from "../../context/Context";
@@ -9,56 +9,13 @@ import { toast } from "react-toastify";
 const SubjectsPage = () => {
 
     const { API_URL } = useContext(Context)
+    const [subjects, setSubjects] = useState([])
+
+  
 
     const [showSubjectModel, setShowSubjectModel] = useState(false)
 
-    const [subjects, setSubjects] = useState([
-        {
-            id: 1,
-            code: "CS-101",
-            name: "Introduction to Computer Science",
-            department: "Computer Science",
-            teacher: "Dr. Jane Doe",
-            initials: "JD",
-            color: "purple",
-        },
-        {
-            id: 2,
-            code: "MATH-202",
-            name: "Advanced Linear Algebra",
-            department: "Mathematics",
-            teacher: "Prof. Alan Smith",
-            initials: "AS",
-            color: "green",
-        },
-        {
-            id: 3,
-            code: "PHY-301",
-            name: "Quantum Physics Foundations",
-            department: "Physics",
-            teacher: "",
-            initials: "",
-            color: "",
-        },
-        {
-            id: 4,
-            code: "ENG-105",
-            name: "Technical Communication",
-            department: "English",
-            teacher: "Emily Brown",
-            initials: "EB",
-            color: "pink",
-        },
-        {
-            id: 5,
-            code: "BIO-201",
-            name: "Molecular Biology",
-            department: "Biology",
-            teacher: "Robert Wilson",
-            initials: "RW",
-            color: "blue",
-        },
-    ]);
+
 
     const [formData, setFormData] = useState({
         name: "",
@@ -90,6 +47,7 @@ const SubjectsPage = () => {
             );
 
             toast.success(response?.data?.message);
+            GetSubject();
 
             // RESET FORM
             setFormData({
@@ -109,9 +67,31 @@ const SubjectsPage = () => {
         }
     };
 
-    const GetSubject = () =>{
-        
-    }
+    const GetSubject = async () => {
+        const token = localStorage.getItem("token");
+
+        try {
+            const response = await axios.get(
+                `${API_URL}/subjects/subjects`,
+                {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                    },
+                }
+            );
+
+            setSubjects(response?.data?.data);
+
+        } catch (error) {
+            toast.error(
+                error?.response?.data?.message || "Failed to fetch subjects"
+            );
+        }
+    };
+
+    useEffect(() => {
+        GetSubject();
+    }, []);
     return (
         <div className="subject-page">
             {/* TABLE CARD */}
