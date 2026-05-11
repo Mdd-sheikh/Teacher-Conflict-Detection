@@ -93,6 +93,9 @@ export const getAllSubjects = async (req, res) => {
             query.$or = [
                 { name: { $regex: search, $options: "i" } },
                 { code: { $regex: search, $options: "i" } },
+                { department: { $regex: search, $options: "i" } },
+                { assignteacher: { $regex: search, $options: "i" } }
+
             ];
         }
 
