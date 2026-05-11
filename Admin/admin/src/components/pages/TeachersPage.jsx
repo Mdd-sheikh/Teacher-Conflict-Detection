@@ -8,6 +8,7 @@ const TeachersPage = () => {
     const { API_URL } = useContext(Context)
 
     const [teacherid, settecherId] = useState("")
+    
 
 
 
@@ -80,7 +81,7 @@ const TeachersPage = () => {
             const token = localStorage.getItem("token");
 
             const response = await axios.post(
-                `${API_URL}/teacher/`,
+                `${API_URL}/teacher/create`,
                 teacherData,
                 {
                     headers: {
@@ -116,6 +117,8 @@ const TeachersPage = () => {
             );
         }
     };
+
+
 
 
 

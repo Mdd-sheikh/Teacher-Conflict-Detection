@@ -146,7 +146,7 @@ const SubjectsPage = () => {
                                                     {subject.initials}
                                                 </div>
 
-                                                <span>{subject.teacher}</span>
+                                                <span>{subject.assignteacher}</span>
                                             </div>
                                         ) : (
                                             <span className="unassigned">
