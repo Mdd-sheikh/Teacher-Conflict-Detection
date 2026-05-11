@@ -1,10 +1,16 @@
 // SubjectPage.jsx
 
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import "./SubjectPage.css";
+import axios from "axios";
+import { Context } from "../../context/Context";
+import { toast } from "react-toastify";
 
 const SubjectsPage = () => {
-    const [showModal, setShowModal] = useState(false);
+
+    const { API_URL } = useContext(Context)
+
+    const [showSubjectModel, setShowSubjectModel] = useState(false)
 
     const [subjects, setSubjects] = useState([
         {
@@ -57,7 +63,10 @@ const SubjectsPage = () => {
     const [formData, setFormData] = useState({
         name: "",
         code: "",
+        department: "",
+        assignteacher: ""
     });
+    console.log(formData);
 
     const handleChange = (e) => {
         setFormData({
@@ -66,32 +75,43 @@ const SubjectsPage = () => {
         });
     };
 
-    const handleAddSubject = () => {
-        if (!formData.name || !formData.code) {
-            alert("Please fill all fields");
-            return;
+    const handleAddSubject = async () => {
+        const token = localStorage.getItem("token");
+
+        try {
+            const response = await axios.post(
+                `${API_URL}/subjects/createsubject`,
+                formData,
+                {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                    },
+                }
+            );
+
+            toast.success(response?.data?.message);
+
+            // RESET FORM
+            setFormData({
+                name: "",
+                code: "",
+                department: "",
+                assignteacher: "",
+            });
+
+            // CLOSE MODAL
+            setShowSubjectModel(false);
+
+        } catch (error) {
+            toast.error(
+                error?.response?.data?.message || "Frontend problem"
+            );
         }
-
-        const newSubject = {
-            id: Date.now(),
-            code: formData.code,
-            name: formData.name,
-            department: "General",
-            teacher: "",
-            initials: "",
-            color: "",
-        };
-
-        setSubjects([newSubject, ...subjects]);
-
-        setFormData({
-            name: "",
-            code: "",
-        });
-
-        setShowModal(false);
     };
 
+    const GetSubject = () =>{
+        
+    }
     return (
         <div className="subject-page">
             {/* TABLE CARD */}
@@ -107,7 +127,7 @@ const SubjectsPage = () => {
 
                     <button
                         className="add-btn"
-                        onClick={() => setShowModal(true)}
+                        onClick={() => setShowSubjectModel(true)}
                     >
                         + Add Subject
                     </button>
@@ -171,6 +191,75 @@ const SubjectsPage = () => {
                         </tbody>
                     </table>
                 </div>
+                {/* Subject Popup */}
+                {showSubjectModel ? (
+                    <div className="subject-modal-overlay">
+                        <div className="subject-modal">
+                            <h2>Add Subject</h2>
+
+                            <div className="subject-form-group">
+                                <label>Subject Code</label>
+                                <input
+                                    type="text"
+                                    name="code"
+                                    placeholder="Enter subject code"
+                                    required
+                                    onChange={handleChange}
+                                    value={formData.code}
+                                />
+                            </div>
+
+                            <div className="subject-form-group">
+                                <label>Subject Name</label>
+                                <input
+                                    type="text"
+                                    placeholder="Enter subject name"
+                                    required
+                                    name="name"
+                                    onChange={handleChange}
+                                    value={formData.name}
+                                />
+                            </div>
+
+                            <div className="subject-form-group">
+                                <label>Department</label>
+                                <input
+                                    type="text"
+                                    placeholder="Enter department"
+                                    required
+                                    name="department"
+                                    onChange={handleChange}
+                                    value={formData.department}
+                                />
+                            </div>
+
+                            <div className="subject-form-group">
+                                <label>Assigned Teacher</label>
+                                <input
+                                    type="text"
+                                    placeholder="Enter teacher name"
+                                    required
+                                    name="assignteacher"
+                                    onChange={handleChange}
+                                    value={formData.assignteacher}
+                                />
+                            </div>
+
+                            <div className="subject-modal-buttons">
+                                <button
+                                    className="cancel-btn"
+                                    onClick={() => setShowSubjectModel(false)}
+                                >
+                                    Cancel
+                                </button>
+
+                                <button onClick={handleAddSubject} className="add-btn">
+                                    Add Subject
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                ) : ""}
 
                 {/* FOOTER */}
                 <div className="table-footer">
@@ -216,83 +305,8 @@ const SubjectsPage = () => {
                 </div>
             </div>
 
-            {/* MODAL */}
-            {/* MODAL */}
-            {/* MODAL */}
-            {
-                showModal && (
-                    <div className="modal-overlay">
 
-                        <div className="modal">
 
-                            {/* HEADER */}
-                            <div className="modal-header">
-                                <h2>Add New Subject</h2>
-
-                                <button
-                                    type="button"
-                                    className="close-btn"
-                                    onClick={() => setShowModal(false)}
-                                >
-                                    ×
-                                </button>
-                            </div>
-
-                            {/* BODY */}
-                            <div className="modal-body">
-
-                                <div className="input-group">
-                                    <label>Subject Name</label>
-
-                                    <input
-                                        type="text"
-                                        name="name"
-                                        placeholder="Enter subject name"
-                                        value={formData.name}
-                                        onChange={handleChange}
-                                    />
-                                </div>
-
-                                <div className="input-group">
-                                    <label>Subject Code</label>
-
-                                    <input
-                                        type="text"
-                                        name="code"
-                                        placeholder="Enter subject code"
-                                        value={formData.code}
-                                        onChange={handleChange}
-                                    />
-                                </div>
-
-                            </div>
-
-                            {/* FOOTER */}
-                            <div className="modal-footer">
-
-                                <button
-                                    type="button"
-                                    className="cancel-btn"
-                                    onClick={() => setShowModal(false)}
-                                >
-                                    Cancel
-                                </button>
-
-                                <button
-                                    type="button"
-                                    className="save-btn"
-                                    onClick={handleAddSubject}
-                                >
-                                    Add Subject
-                                </button>
-
-                            </div>
-
-                        </div>
-
-                    </div>
-                )
-            }
         </div>
     );
 };
