@@ -38,7 +38,13 @@ const teacherSchema = new mongoose.Schema(
       // stored as plain (teacher will change later)
       // OR hash it - your choice
     },
+    teacherId: {
+      type: String
+    },
 
+    password: {
+      type: String
+    },
     // ── Subject Assigned ────────────────
     // Admin assigns which subjects teacher teaches
     subjects: [
@@ -50,12 +56,6 @@ const teacherSchema = new mongoose.Schema(
 
     // ── Class Assigned ──────────────────
     // Admin assigns which classes teacher teaches
-    classes: [
-      {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "Class",
-      },
-    ],
 
     // ── Room Assigned ───────────────────
     // Admin assigns which room teacher uses
@@ -66,14 +66,13 @@ const teacherSchema = new mongoose.Schema(
       },
     ],
 
+    timeSlots: {
+      type: String
+    },
+
     // ── Time Slots Assigned ─────────────
     // Admin assigns working time slots
-    timeSlots: [
-      {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "TimeSlot",
-      },
-    ],
+
 
     // ── Account Status ───────────────────
     isActive: {

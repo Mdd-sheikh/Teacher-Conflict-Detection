@@ -17,7 +17,7 @@ const teacherRouter = express.Router();
 
 
 teacherRouter.post("/preview", auth, previewCredentials);
-teacherRouter.post("/", auth, createTeacher);
+teacherRouter.post("/create", auth, createTeacher);
 teacherRouter.get("/", auth, getAllTeachers);
 teacherRouter.get("/:id", auth, getTeacherById);
 teacherRouter.put("/:id", auth, updateTeacher);

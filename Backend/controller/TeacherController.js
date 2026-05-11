@@ -32,8 +32,7 @@ export const createTeacher = async (req, res) => {
             name,
             email,
             phone,
-            subjects,   // array of subject IDs
-            classes,    // array of class IDs
+            subjects,   // array of subject IDs   // array of class IDs
             rooms,      // array of room IDs
             timeSlots,  // array of timeSlot IDs
         } = req.body;
@@ -69,17 +68,6 @@ export const createTeacher = async (req, res) => {
         }
 
         // ── Validate classes exist ───────────
-        if (classes && classes.length > 0) {
-            const classCount = await Class.countDocuments({
-                _id: { $in: classes },
-            });
-            if (classCount !== classes.length) {
-                return res.status(400).json({
-                    success: false,
-                    message: "One or more classes not found",
-                });
-            }
-        }
 
         // ── Validate rooms exist ─────────────
         if (rooms && rooms.length > 0) {
@@ -95,17 +83,7 @@ export const createTeacher = async (req, res) => {
         }
 
         // ── Validate timeSlots exist ─────────
-        if (timeSlots && timeSlots.length > 0) {
-            const slotCount = await TimeSlot.countDocuments({
-                _id: { $in: timeSlots },
-            });
-            if (slotCount !== timeSlots.length) {
-                return res.status(400).json({
-                    success: false,
-                    message: "One or more time slots not found",
-                });
-            }
-        }
+       
 
         // ── Auto Generate Credentials ────────
         const teacherId = await generateTeacherId();
@@ -119,19 +97,15 @@ export const createTeacher = async (req, res) => {
             teacherId,
             password: plainPassword,
             subjects: subjects || [],
-            classes: classes || [],
             rooms: rooms || [],
-            timeSlots: timeSlots || [],
+            timeSlots,
             isActive: true,
             isFirstLogin: true,
         });
 
         // ── Populate response ────────────────
         const populated = await Teacher.findById(teacher._id)
-            .populate("subjects", "name code")
-            .populate("classes", "name grade")
-            .populate("rooms", "roomNumber type")
-            .populate("timeSlots", "day startTime endTime slotNumber");
+            
 
         res.status(201).json({
             success: true,
