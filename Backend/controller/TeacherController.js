@@ -6,7 +6,7 @@ import TimeSlot from "../Models/timeslot.js";
 
 
 // generate unique teacher ID and default password
-const generateTeacherId = async () => {
+export const generateTeacherId = async () => {
     const year = new Date().getFullYear();
     const count = await Teacher.countDocuments();
     const serial = String(count + 1).padStart(3, "0");
@@ -14,7 +14,7 @@ const generateTeacherId = async () => {
 };
 
 // generate default password based on teacher's name
-const generatePassword = (name) => {
+export const generatePassword = (name) => {
     const parts = name.trim().split(" ");
     const namePart =
         parts.length > 1

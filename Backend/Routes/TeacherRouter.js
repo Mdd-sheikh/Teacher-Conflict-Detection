@@ -1,7 +1,7 @@
 // routes/teacher.js
 import express from "express";
 import { auth } from "../middleware/auth.js";
-import { createTeacher } from "../controller/TeacherController.js";
+import { createTeacher, generatePassword, generateTeacherId } from "../controller/TeacherController.js";
 import { getAllTeachers } from "../controller/TeacherController.js";
 import { getTeacherById } from "../controller/TeacherController.js";
 import { updateTeacher } from "../controller/TeacherController.js";
@@ -24,5 +24,7 @@ teacherRouter.put("/:id", auth, updateTeacher);
 teacherRouter.delete("/:id", auth, deleteTeacher);
 teacherRouter.patch("/:id/reset-password", auth, resetTeacherPassword);
 teacherRouter.patch("/:id/toggle-status", auth, toggleTeacherStatus);
+teacherRouter.get("/generate/teacherid",generateTeacherId);
+teacherRouter.get("/generate/teacherpassword",generatePassword);
 
 export default teacherRouter;
