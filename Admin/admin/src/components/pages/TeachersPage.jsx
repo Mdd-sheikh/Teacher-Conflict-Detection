@@ -1,417 +1,409 @@
-import React, { useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import "./TeacherPage.css";
+import axios from "axios";
+import { Context } from "../../context/Context";
 
 const TeachersPage = () => {
+    const { API_URL } = useContext(Context)
+
+    const [teacherid, settecherId] = useState("")
 
 
 
+    const [openModal, setOpenModal] = useState(false);
 
-    
-  const [openModal, setOpenModal] = useState(false);
-
-  const [teacherData, setTeacherData] = useState({
-    name: "",
-    email: "",
-    phone: "",
-    teacherId: "",
-    password: "",
-    subjects: "",
-    classes: "",
-    rooms: "",
-    timeSlots: "",
-    isActive: true,
-  });
-
-  const teachers = [
-    {
-      name: "Dr. Jane Smith",
-      teacherId: "T-2024-001",
-      email: "jane.smith@edu.com",
-      phone: "+1 234-567-8901",
-      subjects: ["Physics", "Math"],
-      status: "ACTIVE",
-      avatar: "JS",
-      color: "purple",
-    },
-    {
-      name: "Prof. Mark Brown",
-      teacherId: "T-2024-002",
-      email: "m.brown@edu.com",
-      phone: "+1 234-567-8902",
-      subjects: ["Chemistry"],
-      status: "ACTIVE",
-      avatar: "MB",
-      color: "pink",
-    },
-    {
-      name: "Lucy White",
-      teacherId: "T-2023-115",
-      email: "l.white@edu.com",
-      phone: "+1 234-567-8915",
-      subjects: ["History"],
-      status: "INACTIVE",
-      avatar: "LW",
-      color: "gray",
-    },
-  ];
-
-  const handleChange = (e) => {
-    const { name, value, type, checked } = e.target;
-
-    setTeacherData({
-      ...teacherData,
-      [name]: type === "checkbox" ? checked : value,
+    const [teacherData, setTeacherData] = useState({
+        name: "",
+        email: "",
+        phone: "",
+        teacherId: "",
+        password: "",
+        subjects: "",
+        classes: "",
+        rooms: "",
+        timeSlots: "",
+        isActive: true,
     });
-  };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
 
-    console.log(teacherData);
 
-    setOpenModal(false);
+    const teachers = [
+        {
+            name: "Dr. Jane Smith",
+            teacherId: "T-2024-001",
+            email: "jane.smith@edu.com",
+            phone: "+1 234-567-8901",
+            subjects: ["Physics", "Math"],
+            status: "ACTIVE",
+            avatar: "JS",
+            color: "purple",
+        },
+        {
+            name: "Prof. Mark Brown",
+            teacherId: "T-2024-002",
+            email: "m.brown@edu.com",
+            phone: "+1 234-567-8902",
+            subjects: ["Chemistry"],
+            status: "ACTIVE",
+            avatar: "MB",
+            color: "pink",
+        },
+        {
+            name: "Lucy White",
+            teacherId: "T-2023-115",
+            email: "l.white@edu.com",
+            phone: "+1 234-567-8915",
+            subjects: ["History"],
+            status: "INACTIVE",
+            avatar: "LW",
+            color: "gray",
+        },
+    ];
 
-    setTeacherData({
-      name: "",
-      email: "",
-      phone: "",
-      teacherId: "",
-      password: "",
-      subjects: "",
-      classes: "",
-      rooms: "",
-      timeSlots: "",
-      isActive: true,
-    });
-  };
+    const handleChange = (e) => {
+        const { name, value, type, checked } = e.target;
 
-  return (
-    <div className="teacherPage">
+        setTeacherData({
+            ...teacherData,
+            [name]: type === "checkbox" ? checked : value,
+        });
+    };
 
-      {/* HEADER */}
-      <div className="teacherTopBar">
-        <h1>Teacher Management</h1>
+    const handleSubmit = (e) => {
+        const handleLoginSubmit = async (e) => {
+            e.preventDefault();
 
-        <div className="adminAvatar">
-          AD
-        </div>
-      </div>
+            try {
+                const response = await axios.post(
+                    `${API_URL}/user/login`,
+                    loginData
+                );
 
-      {/* STATS */}
-      <div className="teacherStats">
+                alert(response?.data?.message);
 
-        <div className="statCard">
-          <p>TOTAL TEACHERS</p>
-          <h2>124</h2>
-          <span className="greenText">↑ +4 this month</span>
-        </div>
+            } catch (error) {
+                console.log(error);
 
-        <div className="statCard">
-          <p>ACTIVE NOW</p>
-          <h2>118</h2>
-          <span>95% Activity Rate</span>
-        </div>
+                alert(
+                    error?.response?.data?.message ||
+                    "Failed to login"
+                );
+            }
+        };
 
-        <div className="statCard">
-          <p>ON LEAVE</p>
-          <h2 className="redText">6</h2>
-          <span>Scheduled Returns: 2</span>
-        </div>
+        setOpenModal(false);
 
-        <div className="statCard">
-          <p>DEPARTMENTS</p>
-          <h2>12</h2>
-          <span>Average 10/dept</span>
-        </div>
+        setTeacherData({
+            name: "",
+            email: "",
+            phone: "",
+            teacherId: "",
+            password: "",
+            subjects: "",
+            classes: "",
+            rooms: "",
+            timeSlots: "",
+            isActive: true,
+        });
+    };
 
-      </div>
 
-      {/* TABLE */}
-      <div className="teacherTableContainer">
 
-        <div className="tableHeader">
+    return (
+        <div className="teacherPage">
 
-          <input
-            type="text"
-            placeholder="Search by Name or Teacher ID..."
-            className="searchInput"
-          />
+            {/* HEADER */}
 
-          <div className="headerRight">
+            {/* STATS */}
+            <div className="teacherStats">
 
-            <select className="statusSelect">
-              <option>All Status</option>
-              <option>Active</option>
-              <option>Inactive</option>
-            </select>
+                <div className="statCard">
+                    <p>TOTAL TEACHERS</p>
+                    <h2>124</h2>
+                    <span className="greenText">↑ +4 this month</span>
+                </div>
 
-            <button
-              className="addTeacherBtn"
-              onClick={() => setOpenModal(true)}
-            >
-              + Add Teacher
-            </button>
+                <div className="statCard">
+                    <p>ACTIVE NOW</p>
+                    <h2>118</h2>
+                    <span>95% Activity Rate</span>
+                </div>
 
-          </div>
+                <div className="statCard">
+                    <p>ON LEAVE</p>
+                    <h2 className="redText">6</h2>
+                    <span>Scheduled Returns: 2</span>
+                </div>
 
-        </div>
-
-        <table className="teacherTable">
-
-          <thead>
-            <tr>
-              <th>NAME</th>
-              <th>TEACHER ID</th>
-              <th>EMAIL</th>
-              <th>PHONE</th>
-              <th>SUBJECTS</th>
-              <th>STATUS</th>
-              <th>ACTIONS</th>
-            </tr>
-          </thead>
-
-          <tbody>
-
-            {teachers.map((teacher, index) => (
-              <tr key={index}>
-
-                <td>
-                  <div className="teacherInfo">
-
-                    <div className={`teacherAvatar ${teacher.color}`}>
-                      {teacher.avatar}
-                    </div>
-
-                    <div>
-                      <h4>{teacher.name}</h4>
-                    </div>
-
-                  </div>
-                </td>
-
-                <td>{teacher.teacherId}</td>
-
-                <td className="emailText">
-                  {teacher.email}
-                </td>
-
-                <td>{teacher.phone}</td>
-
-                <td>
-                  <div className="subjectContainer">
-
-                    {teacher.subjects.map((sub, i) => (
-                      <span key={i} className="subjectTag">
-                        {sub}
-                      </span>
-                    ))}
-
-                  </div>
-                </td>
-
-                <td>
-
-                  <span
-                    className={
-                      teacher.status === "ACTIVE"
-                        ? "statusActive"
-                        : "statusInactive"
-                    }
-                  >
-                    ● {teacher.status}
-                  </span>
-
-                </td>
-
-                <td>
-
-                  <div className="actionButtons">
-                    <button>👁️</button>
-                    <button>✏️</button>
-                    <button>🔄</button>
-                    <button>🚫</button>
-                  </div>
-
-                </td>
-
-              </tr>
-            ))}
-
-          </tbody>
-
-        </table>
-
-        <div className="paginationContainer">
-
-          <p>Showing 1 to 3 of 124 teachers</p>
-
-          <div className="paginationButtons">
-            <button>{"<"}</button>
-            <button className="activePage">1</button>
-            <button>2</button>
-            <button>3</button>
-            <button>{">"}</button>
-          </div>
-
-        </div>
-
-      </div>
-
-      {/* MODAL */}
-
-      {openModal && (
-        <div className="modalOverlay">
-
-          <div className="modalBox">
-
-            <div className="modalHeader">
-
-              <h2>Add Teacher</h2>
-
-              <button
-                onClick={() => setOpenModal(false)}
-                className="closeBtn"
-              >
-                ✕
-              </button>
+                <div className="statCard">
+                    <p>DEPARTMENTS</p>
+                    <h2>12</h2>
+                    <span>Average 10/dept</span>
+                </div>
 
             </div>
 
-            <form onSubmit={handleSubmit}>
+            {/* TABLE */}
+            <div className="teacherTableContainer">
 
-              <div className="formGroup">
-                <label>Name</label>
+                <div className="tableHeader">
 
-                <input
-                  type="text"
-                  name="name"
-                  value={teacherData.name}
-                  onChange={handleChange}
-                  placeholder="Enter teacher name"
-                />
-              </div>
+                    <input
+                        type="text"
+                        placeholder="Search by Name or Teacher ID..."
+                        className="searchInput"
+                    />
 
-              <div className="formGroup">
-                <label>Email</label>
+                    <div className="headerRight">
 
-                <input
-                  type="email"
-                  name="email"
-                  value={teacherData.email}
-                  onChange={handleChange}
-                  placeholder="Enter email"
-                />
-              </div>
+                        <select className="statusSelect">
+                            <option>All Status</option>
+                            <option>Active</option>
+                            <option>Inactive</option>
+                        </select>
 
-              <div className="formGroup">
-                <label>Phone</label>
+                        <button
+                            className="addTeacherBtn"
+                            onClick={() => setOpenModal(true)}
+                        >
+                            + Add Teacher
+                        </button>
 
-                <input
-                  type="text"
-                  name="phone"
-                  value={teacherData.phone}
-                  onChange={handleChange}
-                  placeholder="Enter phone"
-                />
-              </div>
+                    </div>
 
-              <div className="formGroup">
-                <label>Teacher ID</label>
+                </div>
 
-                <input
-                  type="text"
-                  name="teacherId"
-                  value={teacherData.teacherId}
-                  onChange={handleChange}
-                  placeholder="TCH-2024-001"
-                />
-              </div>
+                <table className="teacherTable">
 
-              <div className="formGroup">
-                <label>Password</label>
+                    <thead>
+                        <tr>
+                            <th>NAME</th>
+                            <th>TEACHER ID</th>
+                            <th>EMAIL</th>
+                            <th>PHONE</th>
+                            <th>SUBJECTS</th>
+                            <th>STATUS</th>
+                            <th>ACTIONS</th>
+                        </tr>
+                    </thead>
 
-                <input
-                  type="password"
-                  name="password"
-                  value={teacherData.password}
-                  onChange={handleChange}
-                  placeholder="Enter password"
-                />
-              </div>
+                    <tbody>
 
-              <div className="formGroup">
-                <label>Subjects</label>
+                        {teachers.map((teacher, index) => (
+                            <tr key={index}>
 
-                <input
-                  type="text"
-                  name="subjects"
-                  value={teacherData.subjects}
-                  onChange={handleChange}
-                  placeholder="Physics, Math"
-                />
-              </div>
+                                <td>
+                                    <div className="teacherInfo">
 
-              <div className="formGroup">
-                <label>Classes</label>
+                                        <div className={`teacherAvatar ${teacher.color}`}>
+                                            {teacher.avatar}
+                                        </div>
 
-                <input
-                  type="text"
-                  name="classes"
-                  value={teacherData.classes}
-                  onChange={handleChange}
-                  placeholder="Class 10-A"
-                />
-              </div>
+                                        <div>
+                                            <h4>{teacher.name}</h4>
+                                        </div>
 
-              <div className="formGroup">
-                <label>Rooms</label>
+                                    </div>
+                                </td>
 
-                <input
-                  type="text"
-                  name="rooms"
-                  value={teacherData.rooms}
-                  onChange={handleChange}
-                  placeholder="Room 101"
-                />
-              </div>
+                                <td>{teacher.teacherId}</td>
 
-              <div className="formGroup">
-                <label>Time Slots</label>
+                                <td className="emailText">
+                                    {teacher.email}
+                                </td>
 
-                <input
-                  type="text"
-                  name="timeSlots"
-                  value={teacherData.timeSlots}
-                  onChange={handleChange}
-                  placeholder="10:00 AM - 12:00 PM"
-                />
-              </div>
+                                <td>{teacher.phone}</td>
 
-              <div className="checkboxGroup">
+                                <td>
+                                    <div className="subjectContainer">
 
-                <input
-                  type="checkbox"
-                  name="isActive"
-                  checked={teacherData.isActive}
-                  onChange={handleChange}
-                />
+                                        {teacher.subjects.map((sub, i) => (
+                                            <span key={i} className="subjectTag">
+                                                {sub}
+                                            </span>
+                                        ))}
 
-                <label>Teacher Active</label>
+                                    </div>
+                                </td>
 
-              </div>
+                                <td>
 
-              <button type="submit" className="submitBtn">
-                Add Teacher
-              </button>
+                                    <span
+                                        className={
+                                            teacher.status === "ACTIVE"
+                                                ? "statusActive"
+                                                : "statusInactive"
+                                        }
+                                    >
+                                        ● {teacher.status}
+                                    </span>
 
-            </form>
+                                </td>
 
-          </div>
+                                <td>
 
+                                    <div className="actionButtons">
+                                        <button>👁️</button>
+                                        <button>✏️</button>
+                                        <button>🔄</button>
+                                        <button>🚫</button>
+                                    </div>
+
+                                </td>
+
+                            </tr>
+                        ))}
+
+                    </tbody>
+
+                </table>
+
+                <div className="paginationContainer">
+
+                    <p>Showing 1 to 3 of 124 teachers</p>
+
+                    <div className="paginationButtons">
+                        <button>{"<"}</button>
+                        <button className="activePage">1</button>
+                        <button>2</button>
+                        <button>3</button>
+                        <button>{">"}</button>
+                    </div>
+
+                </div>
+
+            </div>
+
+            {/* MODAL */}
+
+            {openModal && (
+                <div className="modalOverlay">
+
+                    <div className="modalBox">
+
+                        <div className="modalHeader">
+
+                            <h2>Add Teacher</h2>
+
+                            <button
+                                onClick={() => setOpenModal(false)}
+                                className="closeBtn"
+                            >
+                                ✕
+                            </button>
+
+                        </div>
+
+                        <form onSubmit={handleSubmit}>
+
+                            <div className="formGroup">
+                                <label>Name</label>
+
+                                <input
+                                    type="text"
+                                    name="name"
+                                    value={teacherData.name}
+                                    onChange={handleChange}
+                                    placeholder="Enter teacher name"
+                                />
+                            </div>
+
+                            <div className="formGroup">
+                                <label>Email</label>
+
+                                <input
+                                    type="email"
+                                    name="email"
+                                    value={teacherData.email}
+                                    onChange={handleChange}
+                                    placeholder="Enter email"
+                                />
+                            </div>
+
+                            <div className="formGroup">
+                                <label>Phone</label>
+
+                                <input
+                                    type="text"
+                                    name="phone"
+                                    value={teacherData.phone}
+                                    onChange={handleChange}
+                                    placeholder="Enter phone"
+                                />
+                            </div>
+                            <div className="formGroup">
+                                <label>Subjects</label>
+
+                                <input
+                                    type="text"
+                                    name="subjects"
+                                    value={teacherData.subjects}
+                                    onChange={handleChange}
+                                    placeholder="Physics, Math"
+                                />
+                            </div>
+
+                            <div className="formGroup">
+                                <label>Classes</label>
+
+                                <input
+                                    type="text"
+                                    name="classes"
+                                    value={teacherData.classes}
+                                    onChange={handleChange}
+                                    placeholder="Class 10-A"
+                                />
+                            </div>
+
+                            <div className="formGroup">
+                                <label>Rooms</label>
+
+                                <input
+                                    type="text"
+                                    name="rooms"
+                                    value={teacherData.rooms}
+                                    onChange={handleChange}
+                                    placeholder="Room 101"
+                                />
+                            </div>
+
+                            <div className="formGroup">
+                                <label>Time Slots</label>
+
+                                <input
+                                    type="text"
+                                    name="timeSlots"
+                                    value={teacherData.timeSlots}
+                                    onChange={handleChange}
+                                    placeholder="10:00 AM - 12:00 PM"
+                                />
+                            </div>
+
+                            <div className="checkboxGroup">
+
+                                <input
+                                    type="checkbox"
+                                    name="isActive"
+                                    checked={teacherData.isActive}
+                                    onChange={handleChange}
+                                />
+
+                                <label>Teacher Active</label>
+
+                            </div>
+
+                            <button type="submit" className="submitBtn">
+                                Add Teacher
+                            </button>
+
+                        </form>
+
+                    </div>
+
+                </div>
+            )}
         </div>
-      )}
-    </div>
-  );
+    );
 };
 
 export default TeachersPage;

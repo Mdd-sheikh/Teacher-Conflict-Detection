@@ -24,7 +24,7 @@ const Auth = () => {
     });
 
     console.log(signupData);
-    
+
     const [loginData, setLoginData] = useState({
         email: "",
         password: "",
@@ -52,36 +52,60 @@ const Auth = () => {
 
     // Signup Submit
     const handleSignupSubmit = async (e) => {
-    e.preventDefault();
-
-    try {
-        const response = await axios.post(
-            `${API_URL}/user/register`,
-            signupData
-        );
-
-        localStorage.setItem("token", response?.data?.token);
-
-        alert(response?.data?.message);
-
-        setTimeout(() => {
-            navigate("/dashboard");
-        }, 1000);
-
-    } catch (error) {
-        console.log(error);
-
-        alert(
-            error?.response?.data?.message || "Failed to signup"
-        );
-    }
-};
-
-    // Login Submit
-    const handleLoginSubmit = (e) => {
         e.preventDefault();
 
-        console.log("Login Data:", loginData);
+        try {
+            const response = await axios.post(
+                `${API_URL}/user/register`,
+                signupData
+            );
+
+            localStorage.setItem("token", response?.data?.token);
+
+            alert(response?.data?.message);
+
+            setTimeout(() => {
+                navigate("/dashboard");
+            }, 1000);
+
+        } catch (error) {
+            console.log(error);
+
+            alert(
+                error?.response?.data?.message || "Failed to signup"
+            );
+        }
+    };
+
+    // Login Submit
+    const handleLoginSubmit = async (e) => {
+        e.preventDefault();
+
+        try {
+            const response = await axios.post(
+                `${API_URL}/user/login`,
+                loginData
+            );
+
+            localStorage.setItem(
+                "token",
+                response?.data?.token
+            );
+
+            alert(response?.data?.message);
+
+            setTimeout(() => {
+                navigate("/dashboard");
+            }, 1000);
+
+        } catch (error) {
+            console.log(error);
+
+            alert(
+                error?.response?.data?.message ||
+                "Failed to login"
+            );
+        }
     };
 
     return (
