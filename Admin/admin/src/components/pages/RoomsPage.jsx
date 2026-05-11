@@ -10,7 +10,7 @@ const RoomsPage = () => {
     const { API_URL } = useContext(Context)
     // ==============================
     // MODAL STATE
-    const [rooms, setRooms] = useState([])
+    const {rooms, setRooms} = useContext(Context)
     console.log(rooms);
     
     // ==============================
