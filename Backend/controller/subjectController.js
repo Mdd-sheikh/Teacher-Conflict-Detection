@@ -22,7 +22,7 @@ const generateSubjectCode = async (name) => {
 // ─────────────────────────────────────────
 export const createSubject = async (req, res) => {
     try {
-        const { name, code } = req.body;
+        const { name, code, department, assignteacher } = req.body;
 
         if (!name) {
             return res.status(400).json({
@@ -59,6 +59,8 @@ export const createSubject = async (req, res) => {
         const subject = await SubjectModel.create({
             name,
             code: subjectCode,
+            department,
+            assignteacher
         });
 
         res.status(201).json({

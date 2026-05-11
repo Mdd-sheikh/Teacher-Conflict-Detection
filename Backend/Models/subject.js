@@ -16,6 +16,12 @@ const subjectSchema = new mongoose.Schema(
       uppercase: true,
       // example: "MATH101"
     },
+    department: {
+      type: String
+    },
+    assignteacher: {
+      type: String
+    }
   },
   { timestamps: true }
 );
