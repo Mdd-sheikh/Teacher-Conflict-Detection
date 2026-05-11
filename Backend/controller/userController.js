@@ -36,7 +36,7 @@ export const RegisterUser = async (req, res) => {
 
 
         // Create new user
-        const user = await User.create({
+        const user = await UserModel.create({
             name,
             email,
             password: hashedPassword
