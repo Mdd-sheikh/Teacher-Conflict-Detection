@@ -608,7 +608,7 @@ export default function Dashboard() {
               { icon: "🚪", label: "Add Room", type: "room" },
               { icon: "🏛", label: "Add Class", type: "class" },
             ].map(b => (
-              <button key={b.type} onClick={() => setModal(b.type)}
+              <button key={b.type} onClick={() => setModal(b.type)} 
                 style={{
                   display: "flex", alignItems: "center", justifyContent: "center", gap: 8,
                   padding: "13px 16px", borderRadius: S.radius, background: T.primary, color: "#fff",
