@@ -375,7 +375,7 @@ const TeachersPage = () => {
                                             key={subject._id}
                                             value={subject._id}
                                         >
-                                            {subject.name}
+                                            {subject.name} 
                                         </option>
                                     ))}
                                 </select>

@@ -1,0 +1,281 @@
+/* ─── TimetablePage.css ─── */
+
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap');
+
+/* ── Reset & base ── */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+/* ── Page shell ── */
+.tt-page {
+  font-family: 'DM Sans', sans-serif;
+  background: #f5f4f0;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  user-select: none;
+  color: #1a1a1a;
+}
+
+/* ── Header ── */
+.tt-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1.25rem 2rem;
+  background: #ffffff;
+  border-bottom: 1.5px solid #e4e2da;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.tt-header-left {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.tt-logo-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: #3d5af1;
+}
+
+.tt-title {
+  font-size: 1.15rem;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  color: #1a1a1a;
+}
+
+.tt-header-right {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.tt-count {
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: #6b6b6b;
+  background: #ededea;
+  padding: 4px 10px;
+  border-radius: 20px;
+}
+
+.tt-clear-btn {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.82rem;
+  font-weight: 500;
+  color: #6b6b6b;
+  background: transparent;
+  border: 1.5px solid #d6d4cc;
+  border-radius: 8px;
+  padding: 6px 14px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.tt-clear-btn:hover {
+  background: #f0ede6;
+  border-color: #b5b2aa;
+  color: #1a1a1a;
+}
+
+/* ── Subject bar ── */
+.tt-subject-bar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 0.9rem 2rem;
+  background: #ffffff;
+  border-bottom: 1.5px solid #e4e2da;
+  overflow-x: auto;
+}
+
+.tt-subject-label {
+  font-size: 0.78rem;
+  font-weight: 500;
+  color: #9e9b95;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  white-space: nowrap;
+  margin-right: 4px;
+}
+
+.tt-subject-chip {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.82rem;
+  font-weight: 500;
+  border: 1.5px solid transparent;
+  border-radius: 20px;
+  padding: 5px 14px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  white-space: nowrap;
+  transition: all 0.15s ease;
+  opacity: 0.65;
+  transform: scale(0.97);
+}
+
+.tt-subject-chip.active {
+  opacity: 1;
+  transform: scale(1);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.12);
+}
+
+.tt-chip-check {
+  font-size: 0.72rem;
+  font-weight: 600;
+}
+
+/* Subject colors */
+.subject-math        { background: #dce8ff; color: #1a3dbe; border-color: #b3c9ff; }
+.subject-science     { background: #d4f5e6; color: #126b3e; border-color: #9ee5c3; }
+.subject-english     { background: #fde8d4; color: #a33f10; border-color: #f9c49a; }
+.subject-history     { background: #ede0ff; color: #5a1db5; border-color: #cdb0ff; }
+.subject-pe          { background: #fef3c7; color: #92570a; border-color: #fcd88a; }
+.subject-art         { background: #fce7f3; color: #9d1759; border-color: #f9b5d8; }
+
+/* ── Scroll wrapper ── */
+.tt-scroll-wrapper {
+  flex: 1;
+  overflow: auto;
+  padding: 1.5rem 2rem;
+}
+
+/* ── Grid container ── */
+.tt-grid-container {
+  min-width: fit-content;
+}
+
+.tt-grid {
+  display: grid;
+  /* time col + N day cols */
+  grid-template-columns: 64px repeat(var(--day-count, 7), minmax(90px, 1fr));
+  gap: 4px;
+}
+
+/* ── Corner ── */
+.tt-corner {
+  /* empty top-left cell */
+}
+
+/* ── Day headers ── */
+.tt-day-header {
+  text-align: center;
+  font-size: 0.78rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: #9e9b95;
+  padding: 8px 4px 4px;
+}
+
+/* ── Time labels ── */
+.tt-time-label {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.72rem;
+  color: #b5b2aa;
+  text-align: right;
+  padding-right: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  height: 48px;
+}
+
+/* ── Cells ── */
+.tt-cell {
+  height: 48px;
+  border-radius: 8px;
+  background: #edecea;
+  border: 1.5px solid transparent;
+  cursor: pointer;
+  transition: background 0.12s ease, border-color 0.12s ease, transform 0.1s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.tt-cell:hover:not(.selected) {
+  background: #e0ddd7;
+  border-color: #ccc9c2;
+  transform: scale(1.03);
+}
+
+.tt-cell:active {
+  transform: scale(0.97);
+}
+
+/* Selected cell — base */
+.tt-cell.selected {
+  border-width: 1.5px;
+  border-style: solid;
+  transform: none;
+}
+
+.tt-cell.selected:hover {
+  opacity: 0.88;
+  transform: scale(1.02);
+}
+
+/* Selected color variants */
+.tt-cell.selected.subject-math    { background: #dce8ff; border-color: #7a9ef7; }
+.tt-cell.selected.subject-science { background: #d4f5e6; border-color: #5dcba0; }
+.tt-cell.selected.subject-english { background: #fde8d4; border-color: #f4a267; }
+.tt-cell.selected.subject-history { background: #ede0ff; border-color: #a570f0; }
+.tt-cell.selected.subject-pe      { background: #fef3c7; border-color: #f3c153; }
+.tt-cell.selected.subject-art     { background: #fce7f3; border-color: #ef85c0; }
+
+/* Cell label */
+.tt-cell-label {
+  font-size: 0.68rem;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+  pointer-events: none;
+}
+
+.subject-math    .tt-cell-label { color: #1a3dbe; }
+.subject-science .tt-cell-label { color: #126b3e; }
+.subject-english .tt-cell-label { color: #a33f10; }
+.subject-history .tt-cell-label { color: #5a1db5; }
+.subject-pe      .tt-cell-label { color: #92570a; }
+.subject-art     .tt-cell-label { color: #9d1759; }
+
+/* ── Footer ── */
+.tt-footer {
+  text-align: center;
+  padding: 1rem;
+  font-size: 0.75rem;
+  color: #b5b2aa;
+  border-top: 1.5px solid #e4e2da;
+  background: #ffffff;
+}
+
+/* ── Responsive ── */
+@media (max-width: 640px) {
+  .tt-header,
+  .tt-subject-bar,
+  .tt-scroll-wrapper {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+
+  .tt-cell {
+    height: 40px;
+  }
+
+  .tt-grid {
+    grid-template-columns: 52px repeat(var(--day-count, 7), minmax(60px, 1fr));
+  }
+}
