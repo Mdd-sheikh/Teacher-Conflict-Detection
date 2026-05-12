@@ -19,28 +19,28 @@ import {
 } from "./icons/Icons";
 
 const PAGE_TITLE = {
-    dashboard:  "Dashboard",
-    timetable:  "Timetable Overview",
-    teachers:   "Teacher Management",
-    subjects:   "Subjects Overview",
-    rooms:      "Rooms Overview",
-    conflicts:  "Conflict Resolution"
+    dashboard: "Dashboard",
+    timetable: "Timetable Overview",
+    teachers: "Teacher Management",
+    subjects: "Subjects Overview",
+    rooms: "Rooms Overview",
+    conflicts: "Conflict Resolution"
 };
 
 const NAV_ITEMS = [
     { key: "dashboard", label: "Dashboard", Icon: IcoDashboard },
-    { key: "timetable", label: "Timetable",  Icon: IcoTimetable },
-    { key: "teachers",  label: "Teachers",   Icon: IcoTeachers  },
-    { key: "subjects",  label: "Subjects",   Icon: IcoSubjects  },
-    { key: "rooms",     label: "Rooms",      Icon: IcoRooms     },
-    { key: "conflicts", label: "Conflicts",  Icon: IcoConflicts },
+    { key: "timetable", label: "Timetable", Icon: IcoTimetable },
+    { key: "teachers", label: "Teachers", Icon: IcoTeachers },
+    { key: "subjects", label: "Subjects", Icon: IcoSubjects },
+    { key: "rooms", label: "Rooms", Icon: IcoRooms },
+    { key: "conflicts", label: "Conflicts", Icon: IcoConflicts },
 ];
 
 export default function EduSchedAdmin() {
-    const navigate      = useNavigate();
-    const [page,        setPage]        = useState("subjects");
+    const navigate = useNavigate();
+    const [page, setPage] = useState("subjects");
     const [sidebarOpen, setSidebarOpen] = useState(false);
-    const sidebarRef    = useRef(null);
+    const sidebarRef = useRef(null);
 
     /* ── Close sidebar on outside click (mobile) ── */
     useEffect(() => {
@@ -88,13 +88,13 @@ export default function EduSchedAdmin() {
 
     const renderPage = () => {
         switch (page) {
-            case "dashboard":  return <DashboardPage />;
-            case "subjects":   return <SubjectsPage />;
-            case "rooms":      return <RoomsPage />;
-            case "teachers":   return <TeachersPage />;
-            case "timetable":  return <TimetablePage />;
-            case "conflicts":  return <ConflictsPage />;
-            default:           return null;
+            case "dashboard": return <DashboardPage />;
+            case "subjects": return <SubjectsPage />;
+            case "rooms": return <RoomsPage />;
+            case "teachers": return <TeachersPage />;
+            case "timetable": return <TimetablePage />;
+            case "conflicts": return <ConflictsPage />;
+            default: return null;
         }
     };
 
@@ -102,7 +102,7 @@ export default function EduSchedAdmin() {
         <div className={`app-shell ${sidebarOpen ? "sidebar-open" : ""}`}>
 
             {/* ── SIDEBAR ── */}
-            <aside className="sidebar" ref={sidebarRef}>
+            <aside className="sidebar-admin" ref={sidebarRef}>
 
                 <div>
                     <div className="sidebar-brand">

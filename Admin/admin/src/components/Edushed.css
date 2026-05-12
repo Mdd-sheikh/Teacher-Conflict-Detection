@@ -93,7 +93,7 @@ img {
 /* SIDEBAR                                               */
 /* ===================================================== */
 
-.sidebar {
+.sidebar-admin {
   width: var(--sidebar-w);
   background: var(--sidebar);
   color: #fff;
@@ -1083,7 +1083,7 @@ tbody tr:last-child td {
 
 /* ── lg: tablet landscape ── */
 @media (max-width: 992px) {
-  .sidebar {
+  .sidebar-admin{
     width: var(--sidebar-w-collapsed);
     padding: 20px 12px;
   }
@@ -1254,7 +1254,7 @@ tbody tr:last-child td {
 
 /* ── xs: small phones ── */
 @media (max-width: 480px) {
-  .sidebar {
+  .sidebar-admin {
     position: fixed;
     left: -100%;
     width: var(--sidebar-w);
@@ -1264,7 +1264,7 @@ tbody tr:last-child td {
   }
 
   /* JS should toggle .sidebar-open on .app-shell */
-  .app-shell.sidebar-open .sidebar {
+  .app-shell.sidebar-open .sidebar-admin {
     left: 0;
   }
 
@@ -1375,6 +1375,7 @@ tbody tr:last-child td {
     display: flex;
   }
 }
-.logout{
+
+.logout {
   color: black;
 }
