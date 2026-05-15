@@ -1,31 +1,51 @@
 // login.jsx
-import React, { useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import "./Auth.css";
-import { Link } from "react-router-dom";
-import axios from 'axios'
+import axios from "axios";
+import { Navigate, useNavigate } from "react-router-dom";
+import { Context } from "../context/Context";
 
 const Auth = () => {
-  const [activeTab, setActiveTab] = useState("admin");
+  const [activeTab, setActiveTab] = useState("teacher");
   const [errors, setErrors] = useState({});
-  const API_URL = "https://teacher-conflict-detection-2.onrender.com"
+
+  const {
+    API_URL,
+    Teacherdata,
+    setteacherdata,
+  } = useContext(Context);
+  console.log(Teacherdata);
+  
+
+  const navigate = useNavigate();
+
+  // auto login if token exists
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+
+    if (token) {
+      navigate("/dashboard");
+    }
+  }, []);
 
   const [formData, setFormData] = useState({
-
-    password: "",
     teacherId: "",
+    password: "",
+    remember: false,
   });
 
-
-  const [showPassword, setShowPassword] = useState(false);
-
+  const [showPassword, setShowPassword] =
+    useState(false);
 
   // Handle Input Change
   const handleChange = (e) => {
-    const { name, value, type, checked } = e.target;
+    const { name, value, type, checked } =
+      e.target;
 
     setFormData((prev) => ({
       ...prev,
-      [name]: type === "checkbox" ? checked : value,
+      [name]:
+        type === "checkbox" ? checked : value,
     }));
   };
 
@@ -33,10 +53,14 @@ const Auth = () => {
   const validateForm = () => {
     let newErrors = {};
 
+    if (!formData.teacherId) {
+      newErrors.teacherId =
+        "Teacher ID is required";
+    }
+
     if (!formData.password) {
-      newErrors.password = "Password is required";
-    } else if (formData.password.length < 6) {
-      newErrors.password = "Password must be at least 6 characters";
+      newErrors.password =
+        "Password is required";
     }
 
     setErrors(newErrors);
@@ -45,84 +69,96 @@ const Auth = () => {
   };
 
   // Submit Handler
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
+    // Validation
+    if (!validateForm()) return;
+
     try {
-      const response = axios.post(`${API_URL}/teacher/login/teacherlogin`, formData.teacherId, formData.password)
-      alert(response?.data?.messege)
-      localStorage.setItem("token", token)
+      const response = await axios.post(
+        `${API_URL}/teacher/login/teacherlogin`,
+        formData
+      );
+
+      console.log(response.data);
+
+      // token
+      const token = response?.data?.token;
+
+      // teacher data
+      const teacher = response?.data?.teacher;
+
+      // save token
+      if (token) {
+        localStorage.setItem("token", token);
+      }
+
+      // save teacher data
+      if (teacher) {
+        localStorage.setItem(
+          "teacher",
+          JSON.stringify(teacher)
+        );
+
+        setteacherdata(teacher);
+      }
+
+      alert(
+        response?.data?.message ||
+          "Login Successful"
+      );
+
+      navigate("/dashboard");
 
     } catch (error) {
-      alert("somthing went wrong")
+      console.log(error);
 
+      alert(
+        error?.response?.data?.message ||
+          "Something went wrong"
+      );
     }
   };
+
+  const logoutHandler = () =>{
+    const token = localStorage.removeItem("token")
+    const teacher = localStorage.removeItem("teacher")
+    Navigate("/")
+  }
 
   return (
     <div className="login-container">
       <div className="login-card">
-        {/* Logo */}
+
         <div className="logo-box">🎓</div>
 
-        {/* Heading */}
-        <h1>EduSched Admin</h1>
-        <p className="subtitle">
-          Centralized Timetable Management System
-        </p>
+        <h1>EduSched Teacher Panel</h1>
 
-        {/* Tabs */}
-        <div className="tabs">
-
-          <button
-            className={activeTab === "teacher" ? "active" : ""}
-            onClick={() => setActiveTab("teacher")}
-          >
-            Teacher Login
-          </button>
-        </div>
-
-        {/* Form */}
         <form onSubmit={handleSubmit}>
-          {/* Email */}
-          {activeTab === "admin" ? (
-            <div className="input-group">
-              <label>Teacher Id</label>
 
-              <div className="input-wrapper">
-                <span className="icon">📧</span>
+          {/* Teacher ID */}
+          <div className="input-group">
+            <label>Teacher ID</label>
 
-                <input
-                  type="text"
-                  name="teacherId"
-                  placeholder="admin@school.edu"
-                  value={formData.teacherId}
-                  onChange={handleChange}
-                />
-              </div>
+            <div className="input-wrapper">
+              <span className="icon">🆔</span>
 
-              {errors.email && (
-                <span className="error">{errors.email}</span>
-              )}
+              <input
+                type="text"
+                name="teacherId"
+                placeholder="Enter Teacher ID"
+                value={formData.teacherId}
+                onChange={handleChange}
+              />
             </div>
-          ) : (
-            <div className="teacherid">
-              <label>Teacher ID</label>
 
-              <div className="input-wrapper">
-                <span className="icon">🆔</span>
-
-                <input
-                  type="text"
-                  name="teacherId"
-                  placeholder="Enter Teacher ID"
-                  value={formData.teacherId}
-                  onChange={handleChange}
-                />
-              </div>
-            </div>
-          )}
-
+            {errors.teacherId && (
+              <span className="error">
+                {errors.teacherId}
+              </span>
+            )}
+          </div>
 
           {/* Password */}
           <div className="input-group">
@@ -132,7 +168,11 @@ const Auth = () => {
               <span className="icon">🔒</span>
 
               <input
-                type={showPassword ? "text" : "password"}
+                type={
+                  showPassword
+                    ? "text"
+                    : "password"
+                }
                 name="password"
                 placeholder="••••••••"
                 value={formData.password}
@@ -142,14 +182,20 @@ const Auth = () => {
               <button
                 type="button"
                 className="show-btn"
-                onClick={() => setShowPassword(!showPassword)}
+                onClick={() =>
+                  setShowPassword(
+                    !showPassword
+                  )
+                }
               >
                 {showPassword ? "🙈" : "👁️"}
               </button>
             </div>
 
             {errors.password && (
-              <span className="error">{errors.password}</span>
+              <span className="error">
+                {errors.password}
+              </span>
             )}
           </div>
 
@@ -162,31 +208,21 @@ const Auth = () => {
                 checked={formData.remember}
                 onChange={handleChange}
               />
+
               Remember me
             </label>
           </div>
 
           {/* Submit */}
-          <button type="submit" className="login-btn">
+          <button
+          onClick={logoutHandler}
+            type="submit"
+            className="login-btn"
+          >
             Sign In to Dashboard
           </button>
         </form>
-
-        {/* Footer */}
-        <div className="forgot-text">
-          Forgot Password? <span>Contact Admin</span>
-        </div>
       </div>
-
-      {/* Bottom Cards */}
-      <div className="bottom-links">
-        <div className="bottom-card">🛡️ Support Hub</div>
-        <div className="bottom-card">📖 User Manual</div>
-      </div>
-
-      <p className="copyright">
-        © 2024 EduSched Institutional Systems. All rights reserved.
-      </p>
     </div>
   );
 };

@@ -1,62 +1,49 @@
 // TeacherDashboard.jsx
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import "./TeacherDashboard.css";
+import { Context } from "../context/Context";
+import { useNavigate } from "react-router-dom";
 
 const TeacherDashboard = () => {
-  const [activeMenu, setActiveMenu] = useState("dashboard");
+  const [activeMenu, setActiveMenu] =
+    useState("dashboard");
 
-  const [subjects, setSubjects] = useState([
-    {
-      id: 1,
-      name: "Advanced Physics",
-      class: "11-B",
-      time: "08:00 AM - 09:30 AM",
-      completed: true,
-    },
-    {
-      id: 2,
-      name: "Quantum Mechanics",
-      class: "10-A",
-      time: "10:00 AM - 11:30 AM",
-      completed: false,
-    },
-    {
-      id: 3,
-      name: "Thermodynamics",
-      class: "12-C",
-      time: "01:00 PM - 02:30 PM",
-      completed: false,
-    },
-    {
-      id: 4,
-      name: "Electromagnetism",
-      class: "11-B",
-      time: "03:00 PM - 04:30 PM",
-      completed: true,
-    },
-  ]);
+  const { Teacherdata } = useContext(Context);
 
-  // Mark Subject Completed
+  const Navigate = useNavigate();
+
+  // logout
+  const LogoutHandler = () => {
+    localStorage.removeItem("token");
+    localStorage.removeItem("teacher");
+
+    Navigate("/");
+  };
+
+  // subjects from backend
+  const [subjects, setSubjects] = useState(
+    Teacherdata?.subjects?.map((item) => ({
+      id: item._id,
+      name: item.name,
+      class: item.department,
+      time: Teacherdata?.timeSlots,
+      completed: false,
+    })) || []
+  );
+
+  // mark complete
   const handleComplete = (id) => {
-    const updatedSubjects = subjects.map((subject) =>
-      subject.id === id
-        ? { ...subject, completed: true }
-        : subject
+    const updatedSubjects = subjects.map(
+      (subject) =>
+        subject.id === id
+          ? {
+              ...subject,
+              completed: true,
+            }
+          : subject
     );
 
     setSubjects(updatedSubjects);
-  };
-
-  // Logout Button
-  const handleLogout = () => {
-    alert("Logged Out Successfully");
-  };
-
-  // Teacher Data
-  const teacher = {
-    name: "Dr. Aris",
-    email: "aris@school.edu",
-    phone: "+1 987 654 3210",
   };
 
   return (
@@ -64,39 +51,68 @@ const TeacherDashboard = () => {
 
       {/* Sidebar */}
       <aside className="sidebar">
-        <h2 className="logo">EduSched Admin</h2>
+        <h2 className="logo">
+          EduSched Admin
+        </h2>
 
         <ul className="menu">
           <li
-            className={activeMenu === "dashboard" ? "active" : ""}
-            onClick={() => setActiveMenu("dashboard")}
+            className={
+              activeMenu === "dashboard"
+                ? "active"
+                : ""
+            }
+            onClick={() =>
+              setActiveMenu("dashboard")
+            }
           >
             Dashboard
           </li>
 
           <li
-            className={activeMenu === "subjects" ? "active" : ""}
-            onClick={() => setActiveMenu("subjects")}
+            className={
+              activeMenu === "subjects"
+                ? "active"
+                : ""
+            }
+            onClick={() =>
+              setActiveMenu("subjects")
+            }
           >
             Subjects
           </li>
 
           <li
-            className={activeMenu === "completed" ? "active" : ""}
-            onClick={() => setActiveMenu("completed")}
+            className={
+              activeMenu === "completed"
+                ? "active"
+                : ""
+            }
+            onClick={() =>
+              setActiveMenu("completed")
+            }
           >
             Completed
           </li>
 
           <li
-            className={activeMenu === "account" ? "active" : ""}
-            onClick={() => setActiveMenu("account")}
+            className={
+              activeMenu === "account"
+                ? "active"
+                : ""
+            }
+            onClick={() =>
+              setActiveMenu("account")
+            }
           >
             Account
           </li>
         </ul>
 
-        <button className="logout-btn" onClick={handleLogout}>
+        <button
+          className="logout-btn"
+          onClick={LogoutHandler}
+        >
           Logout
         </button>
       </aside>
@@ -109,7 +125,7 @@ const TeacherDashboard = () => {
           <h1>My Classes</h1>
 
           <div className="teacher-info">
-            Welcome, {teacher.name}
+            Welcome, {Teacherdata?.name}
           </div>
         </div>
 
@@ -118,7 +134,11 @@ const TeacherDashboard = () => {
           <>
             <div className="overview">
               <h2>Schedule Overview</h2>
-              <p>4 Classes Assigned Today</p>
+
+              <p>
+                {subjects.length} Classes
+                Assigned Today
+              </p>
             </div>
 
             <div className="cards-grid">
@@ -126,7 +146,9 @@ const TeacherDashboard = () => {
                 <div
                   key={subject.id}
                   className={`subject-card ${
-                    subject.completed ? "completed-card" : ""
+                    subject.completed
+                      ? "completed-card"
+                      : ""
                   }`}
                 >
                   <span className="class-badge">
@@ -145,7 +167,9 @@ const TeacherDashboard = () => {
                     <button
                       className="mark-btn"
                       onClick={() =>
-                        handleComplete(subject.id)
+                        handleComplete(
+                          subject.id
+                        )
                       }
                     >
                       Mark as Completed
@@ -157,7 +181,7 @@ const TeacherDashboard = () => {
           </>
         )}
 
-        {/* Subjects Page */}
+        {/* Subjects */}
         {activeMenu === "subjects" && (
           <div>
             <h2 className="section-title">
@@ -179,11 +203,11 @@ const TeacherDashboard = () => {
                   <p>{subject.time}</p>
 
                   <p>
-                    Status:{" "}
+                    Status :
                     <strong>
                       {subject.completed
-                        ? "Completed"
-                        : "Pending"}
+                        ? " Completed"
+                        : " Pending"}
                     </strong>
                   </p>
                 </div>
@@ -192,7 +216,7 @@ const TeacherDashboard = () => {
           </div>
         )}
 
-        {/* Completed Subjects */}
+        {/* Completed */}
         {activeMenu === "completed" && (
           <div>
             <h2 className="section-title">
@@ -201,7 +225,10 @@ const TeacherDashboard = () => {
 
             <div className="cards-grid">
               {subjects
-                .filter((subject) => subject.completed)
+                .filter(
+                  (subject) =>
+                    subject.completed
+                )
                 .map((subject) => (
                   <div
                     key={subject.id}
@@ -224,26 +251,50 @@ const TeacherDashboard = () => {
           </div>
         )}
 
-        {/* Account Page */}
+        {/* Account */}
         {activeMenu === "account" && (
           <div className="account-card">
             <h2>Teacher Account</h2>
 
             <div className="account-info">
               <p>
-                <strong>Name:</strong>{" "}
-                {teacher.name}
+                <strong>Name:</strong>
+                {Teacherdata?.name}
               </p>
 
               <p>
-                <strong>Email:</strong>{" "}
-                {teacher.email}
+                <strong>Email:</strong>
+                {Teacherdata?.email}
               </p>
 
               <p>
-                <strong>Phone:</strong>{" "}
-                {teacher.phone}
+                <strong>Phone:</strong>
+                {Teacherdata?.phone}
               </p>
+
+              <p>
+                <strong>Teacher ID:</strong>
+                {Teacherdata?.teacherId}
+              </p>
+
+              <p>
+                <strong>Time Slot:</strong>
+                {Teacherdata?.timeSlots}
+              </p>
+
+              {/* Rooms */}
+              <div className="room-section">
+                <strong>Rooms:</strong>
+
+                {Teacherdata?.rooms?.map(
+                  (room) => (
+                    <div key={room._id}>
+                      Room No :
+                      {room.roomNumber}
+                    </div>
+                  )
+                )}
+              </div>
             </div>
           </div>
         )}
