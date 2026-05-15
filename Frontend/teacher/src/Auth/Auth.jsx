@@ -1,19 +1,23 @@
 // login.jsx
 import React, { useState } from "react";
 import "./Auth.css";
+import { Link } from "react-router-dom";
+import axios from 'axios'
 
 const Auth = () => {
   const [activeTab, setActiveTab] = useState("admin");
+  const [errors, setErrors] = useState({});
+  const API_URL = "https://teacher-conflict-detection-2.onrender.com"
 
   const [formData, setFormData] = useState({
-    email: "",
+
     password: "",
-    remember: false,
+    teacherId: "",
   });
+
 
   const [showPassword, setShowPassword] = useState(false);
 
-  const [errors, setErrors] = useState({});
 
   // Handle Input Change
   const handleChange = (e) => {
@@ -28,14 +32,6 @@ const Auth = () => {
   // Validate Form
   const validateForm = () => {
     let newErrors = {};
-
-    if (!formData.email) {
-      newErrors.email = "Email is required";
-    } else if (
-      !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(formData.email)
-    ) {
-      newErrors.email = "Invalid email address";
-    }
 
     if (!formData.password) {
       newErrors.password = "Password is required";
@@ -52,19 +48,14 @@ const Auth = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    if (validateForm()) {
-      alert(
-        `${activeTab === "admin" ? "Admin" : "Teacher"} Login Successful`
-      );
+    try {
+      const response = axios.post(`${API_URL}/teacher/login/teacherlogin`, formData.teacherId, formData.password)
+      alert(response?.data?.messege)
+      localStorage.setItem("token", token)
 
-      console.log("Login Data:", formData);
+    } catch (error) {
+      alert("somthing went wrong")
 
-      // Reset form
-      setFormData({
-        email: "",
-        password: "",
-        remember: false,
-      });
     }
   };
 
@@ -82,12 +73,6 @@ const Auth = () => {
 
         {/* Tabs */}
         <div className="tabs">
-          <button
-            className={activeTab === "admin" ? "active" : ""}
-            onClick={() => setActiveTab("admin")}
-          >
-            Admin Login
-          </button>
 
           <button
             className={activeTab === "teacher" ? "active" : ""}
@@ -100,25 +85,44 @@ const Auth = () => {
         {/* Form */}
         <form onSubmit={handleSubmit}>
           {/* Email */}
-          <div className="input-group">
-            <label>Email Address</label>
+          {activeTab === "admin" ? (
+            <div className="input-group">
+              <label>Teacher Id</label>
 
-            <div className="input-wrapper">
-              <span className="icon">✉️</span>
+              <div className="input-wrapper">
+                <span className="icon">📧</span>
 
-              <input
-                type="email"
-                name="email"
-                placeholder="admin@school.edu"
-                value={formData.email}
-                onChange={handleChange}
-              />
+                <input
+                  type="text"
+                  name="teacherId"
+                  placeholder="admin@school.edu"
+                  value={formData.teacherId}
+                  onChange={handleChange}
+                />
+              </div>
+
+              {errors.email && (
+                <span className="error">{errors.email}</span>
+              )}
             </div>
+          ) : (
+            <div className="teacherid">
+              <label>Teacher ID</label>
 
-            {errors.email && (
-              <span className="error">{errors.email}</span>
-            )}
-          </div>
+              <div className="input-wrapper">
+                <span className="icon">🆔</span>
+
+                <input
+                  type="text"
+                  name="teacherId"
+                  placeholder="Enter Teacher ID"
+                  value={formData.teacherId}
+                  onChange={handleChange}
+                />
+              </div>
+            </div>
+          )}
+
 
           {/* Password */}
           <div className="input-group">

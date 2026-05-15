@@ -11,6 +11,7 @@ import {
     LifeBuoy,
 } from "lucide-react";
 import { Context } from "../context/Context";
+import { toast } from "react-toastify";
 
 const Auth = () => {
     const navigate = useNavigate()
@@ -66,6 +67,7 @@ const Auth = () => {
 
             setTimeout(() => {
                 navigate("/dashboard");
+                toast.success("Registered successfull")
             }, 1000);
 
         } catch (error) {
@@ -94,9 +96,8 @@ const Auth = () => {
 
             alert(response?.data?.message);
 
-            setTimeout(() => {
                 navigate("/dashboard");
-            }, 1000);
+            
 
         } catch (error) {
             console.log(error);

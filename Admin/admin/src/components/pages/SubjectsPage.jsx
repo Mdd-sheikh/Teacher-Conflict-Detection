@@ -9,7 +9,7 @@ import { toast } from "react-toastify";
 const SubjectsPage = () => {
 
     const { API_URL } = useContext(Context)
-    const [subjects, setSubjects] = useState([])
+    const {subjects, setSubjects} = useContext(Context)
 
   
 

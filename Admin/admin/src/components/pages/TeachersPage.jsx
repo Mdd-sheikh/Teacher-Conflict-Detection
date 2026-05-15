@@ -5,10 +5,13 @@ import { Context } from "../../context/Context";
 import { toast } from "react-toastify";
 
 const TeachersPage = () => {
-    const { API_URL } = useContext(Context)
+    const { API_URL, rooms,
+        setRooms,
+        subjects,
+        setSubjects, teachers, setTeachers } = useContext(Context)
 
-    const [teacherid, settecherId] = useState("")
-    
+
+
 
 
 
@@ -18,49 +21,36 @@ const TeachersPage = () => {
         name: "",
         email: "",
         phone: "",
-        teacherId: "",
-        password: "",
-        subjects: "",
-        classes: "",
-        rooms: "",
         timeSlots: "",
         isActive: true,
+        subjects: [],
+        rooms: [],
     });
 
 
+    const handleSubjectSelect = (e) => {
+        const value = Array.from(
+            e.target.selectedOptions,
+            (option) => option.value
+        );
 
-    const teachers = [
-        {
-            name: "Dr. Jane Smith",
-            teacherId: "T-2024-001",
-            email: "jane.smith@edu.com",
-            phone: "+1 234-567-8901",
-            subjects: ["Physics", "Math"],
-            status: "ACTIVE",
-            avatar: "JS",
-            color: "purple",
-        },
-        {
-            name: "Prof. Mark Brown",
-            teacherId: "T-2024-002",
-            email: "m.brown@edu.com",
-            phone: "+1 234-567-8902",
-            subjects: ["Chemistry"],
-            status: "ACTIVE",
-            avatar: "MB",
-            color: "pink",
-        },
-        {
-            name: "Lucy White",
-            teacherId: "T-2023-115",
-            email: "l.white@edu.com",
-            phone: "+1 234-567-8915",
-            subjects: ["History"],
-            status: "INACTIVE",
-            avatar: "LW",
-            color: "gray",
-        },
-    ];
+        setTeacherData({
+            ...teacherData,
+            subjects: value,
+        });
+    };
+
+    const handleRoomSelect = (e) => {
+        const value = Array.from(
+            e.target.selectedOptions,
+            (option) => option.value
+        );
+
+        setTeacherData({
+            ...teacherData,
+            rooms: value,
+        });
+    };
 
     const handleChange = (e) => {
         const { name, value, type, checked } = e.target;
@@ -100,9 +90,8 @@ const TeachersPage = () => {
                 phone: "",
                 teacherId: "",
                 password: "",
-                subjects: "",
-                classes: "",
-                rooms: "",
+                subjects: [],
+                rooms: [],
                 timeSlots: "",
                 isActive: true,
             });
@@ -119,7 +108,34 @@ const TeachersPage = () => {
     };
 
 
+    const getTeachers = async () => {
+        const token = localStorage.getItem("token");
 
+        try {
+            const response = await axios.get(
+                `${API_URL}/teacher/`,
+                {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                    },
+                }
+            );
+
+            setTeachers(response?.data?.data);
+
+        } catch (error) {
+            console.log(error);
+
+            alert(
+                error?.response?.data?.message ||
+                "Failed to fetch teachers"
+            );
+        }
+    };
+
+    useEffect(() => {
+        getTeachers();
+    }, [])
 
 
     return (
@@ -203,7 +219,7 @@ const TeachersPage = () => {
                     <tbody>
 
                         {teachers.map((teacher, index) => (
-                            <tr key={index}>
+                            <tr key={teacher._id}>
 
                                 <td>
                                     <div className="teacherInfo">
@@ -230,9 +246,9 @@ const TeachersPage = () => {
                                 <td>
                                     <div className="subjectContainer">
 
-                                        {teacher.subjects.map((sub, i) => (
-                                            <span key={i} className="subjectTag">
-                                                {sub}
+                                        {teacher.subjects?.map((sub) => (
+                                            <span key={sub._id} className="subjectTag">
+                                                {sub.name}
                                             </span>
                                         ))}
 
@@ -243,12 +259,12 @@ const TeachersPage = () => {
 
                                     <span
                                         className={
-                                            teacher.status === "ACTIVE"
+                                            teacher.isActive
                                                 ? "statusActive"
                                                 : "statusInactive"
                                         }
                                     >
-                                        ● {teacher.status}
+                                        ● {teacher.isActive ? "ACTIVE" : "INACTIVE"}
                                     </span>
 
                                 </td>
@@ -347,13 +363,36 @@ const TeachersPage = () => {
                             <div className="formGroup">
                                 <label>Subjects</label>
 
-                                <input
-                                    type="text"
+                                <select
+                                    multiple
                                     name="subjects"
                                     value={teacherData.subjects}
-                                    onChange={handleChange}
-                                    placeholder="Physics, Math"
-                                />
+                                    onChange={handleSubjectSelect}
+                                    className="multiSelect"
+                                >
+                                    {subjects?.map((subject) => (
+                                        <option
+                                            key={subject._id}
+                                            value={subject._id}
+                                        >
+                                            {subject.name} 
+                                        </option>
+                                    ))}
+                                </select>
+
+                                <div className="selectedItems">
+                                    {teacherData.subjects.map((id, index) => {
+                                        const selectedSubject = subjects.find(
+                                            (sub) => sub._id === id
+                                        );
+
+                                        return (
+                                            <span key={index} className="selectedTag">
+                                                {selectedSubject?.name}
+                                            </span>
+                                        );
+                                    })}
+                                </div>
                             </div>
 
                             <div className="formGroup">
@@ -371,13 +410,36 @@ const TeachersPage = () => {
                             <div className="formGroup">
                                 <label>Rooms</label>
 
-                                <input
-                                    type="text"
+                                <select
+                                    multiple
                                     name="rooms"
                                     value={teacherData.rooms}
-                                    onChange={handleChange}
-                                    placeholder="Room 101"
-                                />
+                                    onChange={handleRoomSelect}
+                                    className="multiSelect"
+                                >
+                                    {rooms.map((room) => (
+                                        <option
+                                            key={room._id}
+                                            value={room._id}
+                                        >
+                                            {room.roomNumber}
+                                        </option>
+                                    ))}
+                                </select>
+
+                                <div className="selectedItems">
+                                    {teacherData.rooms.map((id, index) => {
+                                        const selectedRoom = rooms.find(
+                                            (room) => room._id === id
+                                        );
+
+                                        return (
+                                            <span key={index} className="selectedTag">
+                                                {selectedRoom?.roomNumber}
+                                            </span>
+                                        );
+                                    })}
+                                </div>
                             </div>
 
                             <div className="formGroup">
