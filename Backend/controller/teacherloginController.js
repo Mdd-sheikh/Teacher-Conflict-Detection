@@ -1,9 +1,6 @@
-import Teacher from "../Models/AddTeacher.js";
-
 // controller/teacherController.js
-
 import jwt from "jsonwebtoken";
-import Teacher from "../models/Teacher.js";
+import Teacher from "../Models/AddTeacher.js";
 
 export const teacherLogin = async (req, res) => {
     try {
