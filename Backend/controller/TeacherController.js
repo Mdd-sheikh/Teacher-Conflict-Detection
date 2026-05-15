@@ -83,7 +83,7 @@ export const createTeacher = async (req, res) => {
         }
 
         // ── Validate timeSlots exist ─────────
-       
+
 
         // ── Auto Generate Credentials ────────
         const teacherId = await generateTeacherId();
@@ -94,7 +94,7 @@ export const createTeacher = async (req, res) => {
             name,
             email,
             phone,
-            teacherId:teacherId,
+            teacherId: teacherId,
             password: plainPassword,
             subjects: subjects || [],
             rooms: rooms || [],
@@ -105,7 +105,7 @@ export const createTeacher = async (req, res) => {
 
         // ── Populate response ────────────────
         const populated = await Teacher.findById(teacher._id)
-            
+
 
         res.status(201).json({
             success: true,

@@ -8,6 +8,7 @@ import classRouter from './Routes/classRouter.js';
 import roomRouter from './Routes/roomRouter.js';
 import subjectRouter from './Routes/subjectRouter.js';
 import timeSlotRouter from './Routes/timeSlotRouter.js';
+import teacherloginRouter from './Routes/teacherloginRouter.js';
 
 
 dotenv.config();
@@ -23,6 +24,7 @@ app.use("/api/class", classRouter);
 app.use("/api/room", roomRouter);
 app.use("/api/subjects", subjectRouter);
 app.use("/api/timeslots", timeSlotRouter);
+app.use("/teacher/login",teacherloginRouter)
 
 // db connection
 connectDB();
