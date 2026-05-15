@@ -89,6 +89,8 @@ const SubjectsPage = () => {
         }
     };
 
+
+
     useEffect(() => {
         GetSubject();
     }, []);
