@@ -9,7 +9,7 @@ const Profile = () => {
 
             <div className="profile-page">
                 <div className="profile-card">
-                    <div className="avatar">AJ</div>
+                    <div className="avatar">priya</div>
 
                     <div>
                         <h1>Alex Johnson</h1>
