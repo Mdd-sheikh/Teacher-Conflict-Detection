@@ -1,0 +1,46 @@
+.notes-page {
+  margin-left: 240px;
+  padding: 30px;
+  color: black;
+}
+
+.note-card {
+  background: white;
+  padding: 30px;
+  border-radius: 20px;
+  margin-bottom: 30px;
+}
+
+.note-card span {
+  background: #dbeafe;
+  color: #2563eb;
+  padding: 8px 14px;
+  border-radius: 20px;
+  font-size: 12px;
+}
+
+.note-card h2 {
+  margin: 20px 0;
+}
+
+.note-card p {
+  color: gray;
+  line-height: 1.7;
+}
+
+.note-card button {
+  margin-top: 20px;
+  width: 100%;
+  padding: 14px;
+  border: 2px solid #2563eb;
+  background: transparent;
+  border-radius: 12px;
+  cursor: pointer;
+  color: black;
+}
+
+@media (max-width: 768px) {
+  .notes-page {
+    margin-left: 70px;
+  }
+}

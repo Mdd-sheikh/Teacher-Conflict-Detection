@@ -1,0 +1,33 @@
+.sidebar {
+  width: 240px;
+  min-height: 100vh;
+  background: #0d1b3d;
+  padding: 30px 20px;
+  position: fixed;
+  left: 0;
+  top: 0;
+}
+
+.side-link {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 16px;
+  margin-bottom: 18px;
+  border-radius: 14px;
+  color: white;
+  text-decoration: none;
+  transition: 0.3s;
+}
+
+.side-link:hover {
+  background: #1f3f8e;
+}
+
+.side-link.active {
+  background: #2563eb;
+}
+
+.side-link span {
+  font-size: 16px;
+}

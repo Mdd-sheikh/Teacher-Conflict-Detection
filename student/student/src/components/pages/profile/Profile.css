@@ -1,0 +1,61 @@
+.profile-page {
+  margin-left: 240px;
+  padding: 30px;
+  color: black;
+}
+
+.profile-card {
+  background: white;
+  padding: 30px;
+  border-radius: 20px;
+  display: flex;
+  gap: 30px;
+  align-items: center;
+}
+
+.avatar {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  background: #dbeafe;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 40px;
+}
+
+.info-card {
+  background: white;
+  margin-top: 30px;
+  padding: 30px;
+  border-radius: 20px;
+}
+
+.info {
+  margin-top: 20px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid #ddd;
+}
+
+.edit-btn {
+  margin-top: 30px;
+  width: 100%;
+  padding: 16px;
+  border: none;
+  border-radius: 14px;
+  background: black;
+  color: white;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+@media (max-width: 768px) {
+  .profile-page {
+    margin-left: 70px;
+  }
+
+  .profile-card {
+    flex-direction: column;
+    text-align: center;
+  }
+}

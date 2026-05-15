@@ -1,0 +1,83 @@
+.attendance-page {
+  margin-left: 240px;
+  padding: 30px;
+  width: 100%;
+  color: black;
+}
+
+.attendance-card {
+  background: white;
+  padding: 30px;
+  border-radius: 20px;
+  display: flex;
+  gap: 30px;
+  align-items: center;
+}
+
+.circle {
+  width: 160px;
+  height: 160px;
+  border-radius: 50%;
+  border: 12px solid #2563eb;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+  margin-top: 30px;
+}
+
+.box {
+  background: white;
+  padding: 30px;
+  border-radius: 18px;
+  text-align: center;
+}
+
+.subjects {
+  margin-top: 30px;
+  background: white;
+  padding: 30px;
+  border-radius: 20px;
+}
+
+.subject {
+  margin-top: 20px;
+}
+
+.progress {
+  width: 100%;
+  height: 12px;
+  background: #e5e7eb;
+  border-radius: 20px;
+}
+
+.fill {
+  width: 85%;
+  height: 100%;
+  background: #10b981;
+  border-radius: 20px;
+}
+
+.second {
+  width: 72%;
+  background: orange;
+}
+
+@media (max-width: 768px) {
+  .attendance-page {
+    margin-left: 70px;
+  }
+
+  .stats {
+    grid-template-columns: 1fr;
+  }
+
+  .attendance-card {
+    flex-direction: column;
+  }
+}
