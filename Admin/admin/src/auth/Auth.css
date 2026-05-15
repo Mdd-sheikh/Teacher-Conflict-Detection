@@ -9,7 +9,10 @@
 
 body {
   background: #f4f5fb;
+  overflow-x: hidden;
 }
+
+/* Main Container */
 
 .auth-container {
   min-height: 100vh;
@@ -17,8 +20,11 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: center;
   padding: 40px 20px;
 }
+
+/* Logo */
 
 .logo-box {
   width: 60px;
@@ -30,33 +36,45 @@ body {
   align-items: center;
   margin-bottom: 20px;
   box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+  flex-shrink: 0;
 }
+
+/* Heading */
 
 .title {
   font-size: 42px;
   font-weight: 700;
   color: #0f172a;
+  text-align: center;
+  line-height: 1.2;
 }
 
 .subtitle {
   margin-top: 8px;
+  margin-bottom: 30px;
   color: #64748b;
   font-size: 15px;
-  margin-bottom: 30px;
+  text-align: center;
+  line-height: 1.5;
 }
+
+/* Card */
 
 .auth-card {
   width: 100%;
   max-width: 500px;
-  background: white;
+  background: #ffffff;
   border-radius: 16px;
   overflow: hidden;
   border: 1px solid #e2e8f0;
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
 }
 
+/* Tabs */
+
 .tabs {
   display: flex;
+  width: 100%;
 }
 
 .tabs button {
@@ -69,17 +87,26 @@ body {
   cursor: pointer;
   color: #64748b;
   border-bottom: 2px solid transparent;
+  transition: 0.3s ease;
+}
+
+.tabs button:hover {
+  background: #eef2ff;
 }
 
 .active-tab {
-  background: white !important;
+  background: #ffffff !important;
   color: #2563eb !important;
   border-bottom: 3px solid #2563eb !important;
 }
 
+/* Form */
+
 .form {
   padding: 35px;
 }
+
+/* Input Group */
 
 .input-group {
   margin-bottom: 22px;
@@ -93,6 +120,8 @@ body {
   font-weight: 600;
 }
 
+/* Input Box */
+
 .input-box {
   display: flex;
   align-items: center;
@@ -100,26 +129,33 @@ body {
   border-radius: 10px;
   padding: 0 14px;
   height: 55px;
-  background: #fff;
-  
- 
+  background: #ffffff;
+  transition: 0.3s ease;
 }
-.input-box input {
-  color: black;
+
+.input-box:focus-within {
+  border-color: #2563eb;
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
 }
 
 .input-box svg {
   color: #64748b;
+  font-size: 18px;
+  flex-shrink: 0;
 }
 
 .input-box input {
   width: 100%;
+  height: 100%;
   border: none;
   outline: none;
   padding-left: 10px;
   font-size: 15px;
   background: transparent;
+  color: #000000;
 }
+
+/* Button */
 
 .submit-btn {
   width: 100%;
@@ -127,23 +163,31 @@ body {
   border: none;
   border-radius: 10px;
   background: #0f5cc8;
-  color: white;
+  color: #ffffff;
   font-size: 16px;
   font-weight: 600;
   cursor: pointer;
   margin-top: 10px;
-  transition: 0.3s;
+  transition: 0.3s ease;
 }
 
 .submit-btn:hover {
   background: #0b4ba6;
+  transform: translateY(-1px);
 }
+
+.submit-btn:active {
+  transform: scale(0.98);
+}
+
+/* Switch Text */
 
 .switch-text {
   text-align: center;
   margin-top: 22px;
   color: #64748b;
   font-size: 14px;
+  line-height: 1.5;
 }
 
 .switch-text span {
@@ -152,6 +196,8 @@ body {
   font-weight: 600;
 }
 
+/* Bottom Box */
+
 .bottom-box {
   background: #f8fafc;
   border-top: 1px solid #e2e8f0;
@@ -159,6 +205,7 @@ body {
   text-align: center;
   color: #64748b;
   font-size: 14px;
+  line-height: 1.5;
 }
 
 .bottom-box span {
@@ -166,6 +213,8 @@ body {
   cursor: pointer;
   font-weight: 600;
 }
+
+/* Footer Buttons */
 
 .footer-buttons {
   margin-top: 24px;
@@ -187,31 +236,141 @@ body {
   color: #334155;
   font-weight: 600;
   cursor: pointer;
+  transition: 0.3s ease;
+  text-align: center;
 }
+
+.footer-card:hover {
+  background: #dbeafe;
+  transform: translateY(-2px);
+}
+
+/* Copyright */
 
 .copyright {
   margin-top: 30px;
   color: #94a3b8;
   font-size: 13px;
+  text-align: center;
+  line-height: 1.5;
 }
 
-/* Responsive */
+/* =========================
+   Responsive Design
+========================= */
+
+/* Tablet */
+
+@media (max-width: 768px) {
+  .auth-container {
+    padding: 30px 16px;
+  }
+
+  .title {
+    font-size: 34px;
+  }
+
+  .subtitle {
+    font-size: 14px;
+  }
+
+  .form {
+    padding: 28px;
+  }
+
+  .tabs button {
+    padding: 16px;
+    font-size: 14px;
+  }
+
+  .submit-btn {
+    height: 50px;
+    font-size: 15px;
+  }
+}
+
+/* Mobile */
 
 @media (max-width: 600px) {
   .title {
     font-size: 30px;
-    text-align: center;
   }
 
   .subtitle {
-    text-align: center;
+    font-size: 14px;
+    margin-bottom: 24px;
+  }
+
+  .auth-card {
+    border-radius: 14px;
   }
 
   .form {
     padding: 22px;
   }
 
+  .input-box {
+    height: 52px;
+  }
+
+  .input-box input {
+    font-size: 14px;
+  }
+
   .footer-buttons {
     flex-direction: column;
+  }
+
+  .footer-card {
+    width: 100%;
+  }
+}
+
+/* Small Mobile */
+
+@media (max-width: 400px) {
+  .auth-container {
+    padding: 20px 12px;
+  }
+
+  .logo-box {
+    width: 54px;
+    height: 54px;
+  }
+
+  .title {
+    font-size: 26px;
+  }
+
+  .subtitle {
+    font-size: 13px;
+  }
+
+  .form {
+    padding: 18px;
+  }
+
+  .tabs button {
+    font-size: 13px;
+    padding: 14px 10px;
+  }
+
+  .input-group label {
+    font-size: 13px;
+  }
+
+  .input-box {
+    height: 48px;
+    padding: 0 12px;
+  }
+
+  .submit-btn {
+    height: 48px;
+    font-size: 14px;
+  }
+
+  .switch-text,
+  .bottom-box {
+    font-size: 13px;
   }
 }

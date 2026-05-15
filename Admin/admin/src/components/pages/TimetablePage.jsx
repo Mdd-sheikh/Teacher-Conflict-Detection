@@ -10,8 +10,8 @@ const TIME_SLOTS = [
 ];
 
 const SUBJECTS = [
-  { label: "Math", color: "subject-math" },
-  { label: "Science", color: "subject-science" },
+  { label: "DM", color: "subject-math" },
+  { label: "Android", color: "subject-science" },
   { label: "English", color: "subject-english" },
   { label: "History", color: "subject-history" },
   { label: "PE", color: "subject-pe" },
