@@ -5,4 +5,4 @@ const teacherloginRouter = express.Router()
 
 teacherloginRouter.post("/teacherlogin",teacherLogin);
 
-export default teacherloginRouter;
+export default teacherloginRouter; 

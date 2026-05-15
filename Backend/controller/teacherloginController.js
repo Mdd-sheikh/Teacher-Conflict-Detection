@@ -38,6 +38,7 @@ export const teacherLogin = async (req, res) => {
             success: true,
             message: "Login successful",
             token,
+            teacher
         });
 
     } catch (error) {
