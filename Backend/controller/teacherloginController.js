@@ -2,12 +2,18 @@ import Teacher from "../Models/AddTeacher.js";
 
 // controller/teacherController.js
 
+import jwt from "jsonwebtoken";
+import Teacher from "../models/Teacher.js";
+
 export const teacherLogin = async (req, res) => {
     try {
         const { teacherId, password } = req.body;
 
-        const teacher = await Teacher.findOne({ teacherId });
+        const teacher = await Teacher.findOne({ teacherId })
+            .populate("subjects")
+            .populate("rooms");
 
+        // teacher not found
         if (!teacher) {
             return res.status(404).json({
                 success: false,
@@ -15,6 +21,7 @@ export const teacherLogin = async (req, res) => {
             });
         }
 
+        // password check
         if (teacher.password !== password) {
             return res.status(401).json({
                 success: false,
@@ -34,11 +41,12 @@ export const teacherLogin = async (req, res) => {
             }
         );
 
+        // send token + teacher data
         res.status(200).json({
             success: true,
             message: "Login successful",
             token,
-            teacher
+            teacher,
         });
 
     } catch (error) {
